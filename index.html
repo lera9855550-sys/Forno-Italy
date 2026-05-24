@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FORNO — Pasta worth crossing the city for · Trastevere, Roma</title>
+  <meta name="description" content="A tiny Roman trattoria with hand-rolled pasta, wood-fired pizza, and tiramisù your nonna would approve of — Trastevere, Roma." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#f6ecd9',
+            'cream-soft': '#fbf3e2',
+            tomato: '#d83a2a',
+            'tomato-deep': '#b32a1c',
+            wine: '#6e1a18',
+            olive: '#6b7a3a',
+            basil: '#4f7a3c',
+            pasta: '#f2c94c',
+            parmesan: '#efd07a',
+            espresso: '#3a241a',
+            mozzarella: '#fdf8ee',
+            background: '#f6ecd9',
+            foreground: '#3a241a',
+            muted: '#ece1c8',
+            'muted-foreground': '#6f5a44',
+            border: 'rgba(58, 36, 26, 0.14)',
+          },
+          fontFamily: {
+            display: ['"Bowlby One"', 'system-ui', 'sans-serif'],
+            body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+            hand: ['"Caveat"', 'cursive'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    :root {
+      --cream: #f6ecd9;
+      --cream-soft: #fbf3e2;
+      --tomato: #d83a2a;
+      --tomato-deep: #b32a1c;
+      --wine: #6e1a18;
+      --olive: #6b7a3a;
+      --basil: #4f7a3c;
+      --pasta: #f2c94c;
+      --parmesan: #efd07a;
+      --parmesan-deep: #c9971c;
+      --espresso: #3a241a;
+      --mozzarella: #fdf8ee;
+    }
+    html { scroll-behavior: smooth; }
+    html, body { height: 100%; margin: 0; }
+    #root { min-height: 100%; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--espresso);
+      background-image:
+        radial-gradient(rgba(58, 36, 26, 0.05) 1px, transparent 1px),
+        radial-gradient(rgba(58, 36, 26, 0.04) 1px, transparent 1px);
+      background-size: 24px 24px, 32px 32px;
+      background-position: 0 0, 16px 16px;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Bowlby One', system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+    }
+    /* Unified section heading scale — every H2 uses this so the page has
+       one consistent secondary type size. The H1 (Hero) stays larger. */
+    .h2-section {
+      font-family: 'Bowlby One', system-ui, sans-serif;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      line-height: 0.9;
+      font-size: clamp(2.25rem, 7vw, 6rem);
+    }
+
+    /* Menu card description: trim to 3 lines on mobile only (so 2-col cards
+       don't get wildly different heights from long descriptions). On larger
+       screens the description shows in full. */
+    .menu-desc {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    @media (min-width: 640px) {
+      .menu-desc {
+        display: block;
+        overflow: visible;
+      }
+    }
+
+    /* ============ Horizontal review carousel ============ */
+    .reviews-scroller {
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;          /* Firefox */
+      -ms-overflow-style: none;       /* IE/old Edge */
+      scroll-behavior: smooth;
+      overscroll-behavior-x: contain;
+    }
+    .reviews-scroller::-webkit-scrollbar {
+      display: none;                  /* Chrome/Safari */
+    }
+    .reviews-scroller > * {
+      scroll-snap-align: start;
+    }
+    ::selection { background: var(--tomato); color: var(--cream-soft); }
+
+    /* Float / wobble / dash / marquee animations */
+    @keyframes float-y {
+      0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+      50% { transform: translateY(-12px) rotate(var(--r, 0deg)); }
+    }
+    .anim-float { animation: float-y 5s ease-in-out infinite; }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(var(--r, -6deg)); }
+      50% { transform: rotate(calc(var(--r, -6deg) + 6deg)); }
+    }
+    .anim-wobble { animation: wobble 4s ease-in-out infinite; }
+
+    @keyframes dash-flow {
+      to { stroke-dashoffset: -200; }
+    }
+    .anim-dash { animation: dash-flow 8s linear infinite; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .anim-marquee { animation: marquee 30s linear infinite; }
+
+    @keyframes soft-pulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.95); }
+      50%      { opacity: 0.7; transform: scale(1.05); }
+    }
+    .anim-soft-pulse { animation: soft-pulse 2.2s ease-in-out infinite; }
+
+    /* ============ Pizza cutter cursor — desktop with fine pointer only ============ */
+    @media (hover: hover) and (pointer: fine) {
+      html, body {
+        cursor: none;
+      }
+      a, button, input, select, textarea, label, [role="button"], summary {
+        cursor: none;
+      }
+      input[type="text"], input[type="email"], input[type="tel"],
+      input[type="date"], input[type="number"], input[type="search"], textarea {
+        cursor: text;
+      }
+
+      /* Canvas for the "cut" trail behind the cutter */
+      .cursor-trail {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+      }
+
+      /* The pizza cutter itself */
+      .cursor-cutter {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 56px;
+        height: 56px;
+        pointer-events: none;
+        z-index: 9998;
+        /* The whole thing pivots on its center so the wheel can spin */
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease;
+        will-change: transform, left, top;
+      }
+      .cursor-cutter.is-hidden {
+        opacity: 0;
+      }
+
+      /* Wheel — rotates as the user moves the mouse */
+      .cursor-cutter .wheel {
+        transform-box: fill-box;
+        transform-origin: center;
+        transition: transform 0.05s linear;
+      }
+      .cursor-cutter.is-hovering .wheel {
+        transition: transform 0.05s linear, scale 0.25s cubic-bezier(0.34, 1.6, 0.64, 1);
+        scale: 1.15;
+      }
+      .cursor-cutter.is-clicking .wheel {
+        transition: transform 0.18s cubic-bezier(0.34, 1.6, 0.64, 1);
+      }
+    }
+    @media (hover: none), (pointer: coarse) {
+      .cursor-cutter, .cursor-trail { display: none !important; }
+    }
+
+
+    @keyframes pizza-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes pizza-hover {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25%      { transform: translateY(-3px) rotate(0.5deg); }
+      50%      { transform: translateY(-2px) rotate(0deg); }
+      75%      { transform: translateY(-4px) rotate(-0.5deg); }
+    }
+    @keyframes ember-flicker {
+      0%, 100% { opacity: 0.7; transform: translateY(0) scale(1, 1); }
+      25%      { opacity: 1;   transform: translateY(-4px) scale(1.05, 1.15); }
+      50%      { opacity: 0.9; transform: translateY(-2px) scale(0.95, 1.1); }
+      75%      { opacity: 1;   transform: translateY(-5px) scale(1.1, 1.2); }
+    }
+    @keyframes oven-glow {
+      0%, 100% { opacity: 0.45; transform: translate(-50%, -30%) scale(1); }
+      50%      { opacity: 0.75; transform: translate(-50%, -30%) scale(1.1); }
+    }
+    @keyframes pizza-heat-glow {
+      0%, 100% { opacity: 0; }
+      50%      { opacity: 1; }
+    }
+    @keyframes loader-dot {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50%      { opacity: 1;   transform: translateY(-4px); }
+    }
+    @keyframes wobble-tilt {
+      0%, 100% { transform: rotate(-8deg); }
+      50%      { transform: rotate(8deg); }
+    }
+
+    #page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--cream);
+      background-image:
+        radial-gradient(rgba(58, 36, 26, 0.05) 1px, transparent 1px),
+        radial-gradient(rgba(58, 36, 26, 0.04) 1px, transparent 1px);
+      background-size: 24px 24px, 32px 32px;
+      background-position: 0 0, 16px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 28px;
+      opacity: 1;
+      transition: opacity 0.6s ease-out;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    #page-loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Pizza container — holds the pizza + the glow + the flames */
+    .loader-pizza-wrap {
+      position: relative;
+      width: 260px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Pulsing red/orange glow from below — represents heat rising from flames */
+    .loader-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center,
+        rgba(232, 112, 42, 0.55) 0%,
+        rgba(242, 201, 76, 0.35) 25%,
+        rgba(216, 58, 42, 0.15) 55%,
+        rgba(216, 58, 42, 0) 75%);
+      animation: oven-glow 1.6s ease-in-out infinite;
+      filter: blur(12px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* The pizza — bigger, hovers above flames (no spin — it's reacting to heat) */
+    .loader-pizza {
+      width: 210px;
+      height: 210px;
+      position: relative;
+      z-index: 2;
+      animation: pizza-hover 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 6px 12px rgba(58, 36, 26, 0.25));
+    }
+    .loader-pizza svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* Heat shimmer — bottom of pizza pulses warmer with the flame */
+    .loader-pizza .heat-glow {
+      animation: pizza-heat-glow 1.6s ease-in-out infinite;
+    }
+
+    /* Bigger, taller flames that lick at the pizza's bottom */
+    .loader-flame {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      z-index: 1;
+    }
+    .loader-flame span {
+      display: block;
+      width: 14px;
+      height: 28px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      background: linear-gradient(to top, var(--tomato) 0%, var(--pasta) 70%, #fff8d6 100%);
+      animation: ember-flicker 0.7s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    .loader-flame span:nth-child(1) { animation-delay: 0s;    height: 26px; }
+    .loader-flame span:nth-child(2) { animation-delay: 0.2s;  height: 38px; width: 18px; }
+    .loader-flame span:nth-child(3) { animation-delay: 0.05s; height: 30px; }
+    .loader-flame span:nth-child(4) { animation-delay: 0.3s;  height: 34px; width: 16px; }
+    .loader-flame span:nth-child(5) { animation-delay: 0.15s; height: 24px; }
+
+    /* Progress: circular ring around the pizza + numeric % below */
+    .loader-progress-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      height: 240px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .loader-progress-ring circle {
+      fill: none;
+      stroke-linecap: round;
+    }
+    .loader-progress-ring .ring-bg {
+      stroke: rgba(58, 36, 26, 0.12);
+      stroke-width: 4;
+    }
+    .loader-progress-ring .ring-fg {
+      stroke: var(--tomato);
+      stroke-width: 5;
+      stroke-dasharray: 691.15; /* 2π × 110 */
+      stroke-dashoffset: 691.15;
+      transform: rotate(-90deg);
+      transform-origin: center;
+      transition: stroke-dashoffset 0.3s ease-out;
+    }
+    .loader-percent {
+      font-family: 'Bowlby One', system-ui, sans-serif;
+      color: var(--tomato);
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .loader-sticker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--espresso);
+      box-shadow: 3px 3px 0 var(--espresso);
+      background: var(--pasta);
+      color: var(--espresso);
+      font-family: 'Bowlby One', system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: wobble-tilt 3s ease-in-out infinite;
+    }
+    .loader-caption {
+      font-family: 'Caveat', cursive;
+      color: var(--tomato);
+      font-size: 28px;
+      transform: rotate(-3deg);
+    }
+    .loader-dots {
+      display: inline-flex;
+      gap: 5px;
+      margin-left: 4px;
+    }
+    .loader-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--tomato);
+      animation: loader-dot 1.1s ease-in-out infinite;
+    }
+    .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    .loader-brand {
+      font-family: 'Bowlby One', system-ui, sans-serif;
+      color: var(--tomato);
+      font-size: 36px;
+      letter-spacing: 0.02em;
+      transform: rotate(-2deg);
+    }
+
+    /* Reveal on scroll — uses individual translate/scale properties so it composes
+       with any transform-based classes (Tailwind hover:-translate-y, -rotate-N, etc.) */
+    [data-reveal] {
+      opacity: 0;
+      translate: 0 30px;
+      transition: opacity 0.7s ease-out, translate 0.7s ease-out, scale 0.7s ease-out, rotate 0.7s ease-out;
+    }
+    [data-reveal][data-from="left"]  { translate: -40px 0; }
+    [data-reveal][data-from="right"] { translate: 40px 0; }
+    [data-reveal][data-from="up"]    { translate: 0 60px; }
+    [data-reveal][data-from="scale"] { translate: 0 0; scale: 0.92; }
+
+    /* Pop — springy overshoot: arrives slightly bigger then settles. */
+    [data-reveal][data-from="pop"]   { translate: 0 0; scale: 0.5; opacity: 0; }
+    [data-reveal][data-from="pop"].in {
+      scale: 1;
+      transition: opacity 0.5s ease-out, scale 0.7s cubic-bezier(0.34, 1.8, 0.64, 1);
+    }
+
+    /* Tilt — flies in with a rotation that straightens out. */
+    [data-reveal][data-from="tilt"]  { translate: 0 40px; rotate: -8deg; }
+    [data-reveal][data-from="tilt-r"] { translate: 0 40px; rotate: 8deg; }
+
+    /* Peek — slides in horizontally with a soft bounce. */
+    [data-reveal][data-from="peek-l"] { translate: -60px 0; rotate: -4deg; opacity: 0; }
+    [data-reveal][data-from="peek-r"] { translate: 60px 0;  rotate: 4deg;  opacity: 0; }
+    [data-reveal][data-from="peek-l"].in,
+    [data-reveal][data-from="peek-r"].in {
+      transition: opacity 0.6s ease-out, translate 0.7s cubic-bezier(0.34, 1.5, 0.64, 1), rotate 0.7s cubic-bezier(0.34, 1.5, 0.64, 1);
+    }
+
+    [data-reveal].in {
+      opacity: 1;
+      translate: 0 0;
+      scale: 1;
+      rotate: 0deg;
+    }
+
+    [data-reveal-rot] {
+      opacity: 0;
+      transform: translateY(20px) rotate(0deg);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    [data-reveal-rot].in {
+      opacity: 1;
+      transform: translateY(0) rotate(var(--final-rot, 0deg));
+    }
+
+    /* ============ Hover micro-animations ============ */
+    /* Card that lifts and casts a deeper shadow on hover */
+    .hover-lift {
+      transition: translate 0.25s ease-out, box-shadow 0.25s ease-out;
+    }
+    .hover-lift:hover {
+      translate: 0 -4px;
+    }
+
+    /* Icon that spins on parent hover (use with .group on the parent) */
+    @keyframes icon-pop {
+      0%   { transform: rotate(0deg) scale(1); }
+      40%  { transform: rotate(-10deg) scale(1.15); }
+      100% { transform: rotate(12deg) scale(1.1); }
+    }
+    .group:hover .group-icon-pop {
+      animation: icon-pop 0.4s ease-out forwards;
+    }
+
+    /* Price that wiggles on parent hover */
+    @keyframes price-pulse {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      30%      { transform: scale(1.15) rotate(-3deg); }
+      60%      { transform: scale(1.1) rotate(2deg); }
+    }
+    .group:hover .group-price-wiggle {
+      animation: price-pulse 0.55s ease-out;
+    }
+
+    /* Underline that draws in from left on parent hover */
+    .hover-underline {
+      position: relative;
+    }
+    .hover-underline::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 100%;
+      height: 2px;
+      background: var(--tomato);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease-out;
+    }
+    .hover-underline:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Image slow zoom (already used on menu cards, refine timing) */
+    .img-zoom { transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .group:hover .img-zoom { transform: scale(1.08); }
+
+    /* Hero pizza pop-in */
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .anim-pop { animation: pop-in 0.8s ease-out both; }
+
+    /* hide spinner buttons on number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  </style>
+
+  <!-- React + Babel via CDN -->
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <!-- Page loader — visible immediately, hidden once React mounts -->
+  <div id="page-loader" aria-hidden="true">
+    <div class="loader-sticker">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+      </svg>
+      wood-fired in progress
+    </div>
+
+    <div class="loader-pizza-wrap">
+      <!-- Pulsing oven glow behind the pizza -->
+      <div class="loader-glow" aria-hidden="true"></div>
+
+      <!-- Progress ring around the pizza -->
+      <svg class="loader-progress-ring" viewBox="0 0 240 240" aria-hidden="true">
+        <circle class="ring-bg" cx="120" cy="120" r="110" />
+        <circle id="loader-ring-fg" class="ring-fg" cx="120" cy="120" r="110" />
+      </svg>
+
+      <!-- The pizza -->
+      <div class="loader-pizza">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer crust ring (golden brown) -->
+          <circle cx="50" cy="50" r="46" fill="#c9971c" stroke="#3a241a" stroke-width="3" />
+          <!-- Charred crust spots around the edge -->
+          <circle cx="15" cy="42" r="3" fill="#3a241a" opacity="0.55" />
+          <circle cx="22" cy="78" r="2.5" fill="#3a241a" opacity="0.5" />
+          <circle cx="78" cy="80" r="3" fill="#3a241a" opacity="0.6" />
+          <circle cx="85" cy="35" r="2.5" fill="#3a241a" opacity="0.5" />
+          <circle cx="50" cy="9" r="2.5" fill="#3a241a" opacity="0.55" />
+
+          <!-- Cheese / sauce inner circle -->
+          <circle cx="50" cy="50" r="36" fill="#f2c94c" stroke="#3a241a" stroke-width="2" />
+          <!-- Sauce blobs for texture (translucent red) -->
+          <ellipse cx="32" cy="42" rx="8" ry="6" fill="#d83a2a" opacity="0.4" />
+          <ellipse cx="62" cy="58" rx="9" ry="7" fill="#d83a2a" opacity="0.4" />
+          <ellipse cx="58" cy="32" rx="6" ry="5" fill="#d83a2a" opacity="0.35" />
+          <ellipse cx="38" cy="65" rx="7" ry="5" fill="#d83a2a" opacity="0.35" />
+
+          <!-- Pepperoni — 4 pieces -->
+          <g stroke="#3a241a" stroke-width="2">
+            <circle cx="35" cy="36" r="6.5" fill="#d83a2a" />
+            <circle cx="65" cy="40" r="6"   fill="#d83a2a" />
+            <circle cx="40" cy="62" r="5.5" fill="#d83a2a" />
+            <circle cx="62" cy="64" r="6.5" fill="#d83a2a" />
+          </g>
+
+          <!-- Basil leaves — 3 little ones -->
+          <g stroke="#3a241a" stroke-width="1.5">
+            <ellipse cx="50" cy="46" rx="4" ry="2.5" fill="#4f7a3c" transform="rotate(-25 50 46)" />
+            <ellipse cx="28" cy="54" rx="3.5" ry="2" fill="#4f7a3c" transform="rotate(40 28 54)" />
+            <ellipse cx="70" cy="52" rx="3.5" ry="2" fill="#4f7a3c" transform="rotate(-30 70 52)" />
+          </g>
+
+          <!-- Subtle cheese highlights (light cream dots) -->
+          <circle cx="45" cy="50" r="2" fill="#fbf3e2" opacity="0.55" />
+          <circle cx="55" cy="48" r="1.5" fill="#fbf3e2" opacity="0.45" />
+          <circle cx="48" cy="58" r="1.2" fill="#fbf3e2" opacity="0.45" />
+
+          <!-- Heat shimmer overlay on bottom half (pulses with flames) -->
+          <defs>
+            <radialGradient id="heat-rgrad" cx="50%" cy="100%" r="60%">
+              <stop offset="0%" stop-color="#fff8d6" stop-opacity="0.65" />
+              <stop offset="50%" stop-color="#f2c94c" stop-opacity="0.3" />
+              <stop offset="100%" stop-color="#d83a2a" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <circle class="heat-glow" cx="50" cy="50" r="46" fill="url(#heat-rgrad)" />
+        </svg>
+      </div>
+
+      <!-- Flames licking up at the pizza bottom -->
+      <div class="loader-flame" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Numeric progress -->
+    <div class="loader-percent" id="loader-percent">0%</div>
+
+    <div class="loader-brand">FORNO.</div>
+
+    <div class="loader-caption">
+      cucinando<span class="loader-dots"><span></span><span></span><span></span></span>
+    </div>
+  </div>
+
+  <script>
+    // Loader manager: tracks fake-progress until React mounts, then 100% + fade.
+    // The progress bar accelerates as React gets closer to ready.
+    (function() {
+      const loader  = document.getElementById('page-loader');
+      const root    = document.getElementById('root');
+      const ringFg  = document.getElementById('loader-ring-fg');
+      const pctText = document.getElementById('loader-percent');
+      const minDuration = 1200; // ms — minimum loader display so animation reads
+      const startedAt = performance.now();
+
+      // Stroke math — must match CSS: circle r=110, circumference = 2π·110 ≈ 691.15
+      const CIRCUMFERENCE = 2 * Math.PI * 110;
+
+      let progress = 0;       // 0..100
+      let target = 0;         // where we're heading
+      let reactReady = false;
+      let finishing = false;
+
+      function setProgress(p) {
+        progress = Math.max(0, Math.min(100, p));
+        const offset = CIRCUMFERENCE * (1 - progress / 100);
+        if (ringFg) ringFg.style.strokeDashoffset = offset;
+        if (pctText) pctText.textContent = Math.round(progress) + '%';
+      }
+
+      // Tick: ease progress toward target, never jumping
+      function tick() {
+        if (!finishing) {
+          // Phase 1: creep toward target. Speed proportional to gap.
+          const diff = target - progress;
+          if (diff > 0.01) progress += diff * 0.08;
+          setProgress(progress);
+
+          // Gradually push target upward in stages — fake-real progress curve.
+          // Until React is ready, max out at 85%. After it's ready, allow 100%.
+          if (!reactReady) {
+            const elapsed = performance.now() - startedAt;
+            // Asymptotic curve: target = 85 * (1 - e^(-t/1200))
+            target = 85 * (1 - Math.exp(-elapsed / 1200));
+          } else {
+            target = 100;
+          }
+        }
+        if (progress < 99.5 || !reactReady) {
+          requestAnimationFrame(tick);
+        } else {
+          // Snap to exactly 100 and call hide
+          setProgress(100);
+          if (!finishing) {
+            finishing = true;
+            hide();
+          }
+        }
+      }
+      requestAnimationFrame(tick);
+
+      function hide() {
+        const elapsed = performance.now() - startedAt;
+        const delay = Math.max(0, minDuration - elapsed);
+        setTimeout(() => {
+          loader.classList.add('fade-out');
+          setTimeout(() => loader.remove(), 700);
+        }, delay);
+      }
+
+      // Poll #root until React has mounted something — then trigger final ramp
+      const checkInterval = setInterval(() => {
+        if (root && root.children.length > 0) {
+          clearInterval(checkInterval);
+          reactReady = true;
+        }
+      }, 80);
+
+      // Safety: force-finish after 8s no matter what
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        reactReady = true;
+      }, 8000);
+    })();
+  </script>
+
+  <!-- Pizza cutter cursor: trail canvas + SVG cutter -->
+  <canvas class="cursor-trail" aria-hidden="true"></canvas>
+  <svg class="cursor-cutter is-hidden" aria-hidden="true" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+    <!-- Handle: small wood-tone rectangle with espresso outline, pointing up-right -->
+    <g transform="translate(28 28) rotate(-35)">
+      <rect x="-3" y="-26" width="6" height="20" rx="2"
+            fill="#c9971c" stroke="#3a241a" stroke-width="2" />
+      <!-- Connector pin between handle and wheel -->
+      <circle cx="0" cy="-4" r="2.5" fill="#3a241a" />
+    </g>
+    <!-- Wheel: spins as mouse moves. Centered at (28,28). -->
+    <g class="wheel">
+      <!-- Outer disc -->
+      <circle cx="28" cy="28" r="13" fill="#f6ecd9" stroke="#3a241a" stroke-width="2.5" />
+      <!-- Inner spokes — make rotation visible -->
+      <line x1="28" y1="17" x2="28" y2="39" stroke="#3a241a" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="17" y1="28" x2="39" y2="28" stroke="#3a241a" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="20.3" y1="20.3" x2="35.7" y2="35.7" stroke="#3a241a" stroke-width="1" stroke-linecap="round" opacity="0.5" />
+      <line x1="35.7" y1="20.3" x2="20.3" y2="35.7" stroke="#3a241a" stroke-width="1" stroke-linecap="round" opacity="0.5" />
+      <!-- Center hub -->
+      <circle cx="28" cy="28" r="3" fill="#d83a2a" stroke="#3a241a" stroke-width="1.5" />
+    </g>
+  </svg>
+  <script>
+    (function() {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+      const cutter = document.querySelector('.cursor-cutter');
+      const canvas = document.querySelector('.cursor-trail');
+      const wheel = cutter && cutter.querySelector('.wheel');
+      if (!cutter || !canvas || !wheel) return;
+
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+
+      function resizeCanvas() {
+        canvas.width  = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width  = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.scale(dpr, dpr);
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Trail = array of recent segments. Each segment fades over `LIFE` ms.
+      const LIFE = 1400;
+      const segments = []; // { x1,y1,x2,y2, born }
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let prevX = mouseX;
+      let prevY = mouseY;
+      let wheelAngle = 0; // degrees
+      let lastClickKick = 0; // extra rotation applied on click
+
+      window.addEventListener('mousemove', (e) => {
+        prevX = mouseX;
+        prevY = mouseY;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cutter.classList.remove('is-hidden');
+
+        // Position the cutter
+        cutter.style.left = mouseX + 'px';
+        cutter.style.top  = mouseY + 'px';
+
+        // Rotate the wheel based on distance travelled.
+        // Wheel circumference ~ 2π·13 ≈ 82px. So 82px of travel = 360°.
+        const dx = mouseX - prevX;
+        const dy = mouseY - prevY;
+        const dist = Math.hypot(dx, dy);
+        // Direction matters: rotate one way for rightward motion, the other for leftward.
+        // We use the horizontal component sign as the dominant direction indicator.
+        const dir = dx >= 0 ? 1 : -1;
+        wheelAngle += dir * (dist / 82) * 360;
+        wheel.style.transform = `rotate(${wheelAngle + lastClickKick}deg)`;
+
+        // Add a fresh trail segment if we actually moved
+        if (dist > 0.5) {
+          segments.push({ x1: prevX, y1: prevY, x2: mouseX, y2: mouseY, born: performance.now() });
+        }
+      }, { passive: true });
+
+      window.addEventListener('mouseleave', () => cutter.classList.add('is-hidden'));
+      window.addEventListener('mouseenter', () => cutter.classList.remove('is-hidden'));
+
+      // Click = "press down": kick the wheel an extra quick spin
+      window.addEventListener('mousedown', () => {
+        cutter.classList.add('is-clicking');
+        lastClickKick += 90; // sudden 90° rotation
+        wheel.style.transform = `rotate(${wheelAngle + lastClickKick}deg)`;
+      });
+      window.addEventListener('mouseup', () => {
+        cutter.classList.remove('is-clicking');
+      });
+
+      // Hover detection — wheel scales up over interactive elements
+      const HOVER_SEL = 'a, button, [role="button"], input[type="checkbox"], input[type="radio"], select, summary, label[for]';
+      let lastHover = false;
+      window.addEventListener('mousemove', (e) => {
+        const target = e.target;
+        const hovering = target && target.closest && !!target.closest(HOVER_SEL);
+        if (hovering !== lastHover) {
+          lastHover = hovering;
+          cutter.classList.toggle('is-hovering', hovering);
+        }
+      }, { passive: true });
+
+      // Trail render loop — clears each frame, redraws fresh segments with fading opacity
+      function renderTrail() {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        const now = performance.now();
+
+        // Drop expired segments
+        while (segments.length && now - segments[0].born > LIFE) {
+          segments.shift();
+        }
+
+        for (const s of segments) {
+          const age = now - s.born;
+          const t = age / LIFE; // 0 → 1
+          const alpha = (1 - t) * 0.85;
+          ctx.strokeStyle = `rgba(216, 58, 42, ${alpha})`;
+          ctx.lineWidth = 2.5;
+          ctx.lineCap = 'round';
+          // Dashed look so it reads as a "cut" line, not a regular trail
+          ctx.setLineDash([6, 5]);
+          ctx.lineDashOffset = -age * 0.02;
+          ctx.beginPath();
+          ctx.moveTo(s.x1, s.y1);
+          ctx.lineTo(s.x2, s.y2);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        requestAnimationFrame(renderTrail);
+      }
+      requestAnimationFrame(renderTrail);
+    })();
+  </script>
+
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect, useRef } = React;
+
+    /* ====================== ICONS (lucide-style, MIT) ====================== */
+    const ICONS = {
+      menu: '<line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>',
+      x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+      plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+      minus: '<line x1="5" y1="12" x2="19" y2="12"/>',
+      check: '<polyline points="20 6 9 17 4 12"/>',
+      'chevron-right': '<polyline points="9 18 15 12 9 6"/>',
+      star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+      'map-pin': '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+      phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+      mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/>',
+      instagram: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>',
+      clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+      'calendar-days': '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+      leaf: '<path d="M11 20A7 7 0 0 1 4 13c0-2.5 1.5-5 5-7 4.5-2.5 9-1 9-1s1.5 4.5-1 9c-2 3.5-4.5 5-7 5z"/><path d="M2 22s2-10 9-13"/>',
+      flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+      sparkles: '<path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z"/><path d="M5 14l.6 1.6L7 16l-1.4.4L5 18l-.6-1.6L3 16l1.4-.4L5 14z"/>',
+      'shopping-bag': '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+      wheat: '<path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/>',
+      plane: '<path d="M11 1.5 L13 1.5 L13 9 L23 13.5 L23 15.5 L13 13 L13 18 L16 20 L16 22 L12 21.2 L8 22 L8 20 L11 18 L11 13 L1 15.5 L1 13.5 L11 9 Z" stroke-linejoin="round"/>',
+      'rotate-ccw': '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',
+    };
+
+    function Icon({ name, size = 20, className = '', strokeWidth = 2, fill = 'none' }) {
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill={fill}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={className}
+          dangerouslySetInnerHTML={{ __html: ICONS[name] || '' }}
+        />
+      );
+    }
+
+    /* ====================== DATA ====================== */
+    const img = {
+      pizza: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaBoard: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaQuattro: "https://images.unsplash.com/photo-1513104890138-7c749659a591?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaPesto: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaCarbonara: "https://images.unsplash.com/photo-1593504049359-74330189a345?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaAnchovy: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaMortadella: "https://images.unsplash.com/photo-1628840042765-356cda07504e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pizzaArugula: "https://images.unsplash.com/photo-1600028068383-ea11a7a101f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      bruschetta: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      polenta: "https://images.unsplash.com/photo-1599321955726-f5ae2a59abc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      crostini: "https://images.unsplash.com/photo-1606851180173-a1d75ca5e60f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      truffleToast: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      focaccia: "https://images.unsplash.com/photo-1620057950336-fa86d3ace461?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      zucchiniFries: "https://images.unsplash.com/photo-1599481238640-4c1288750d7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      whippedRicotta: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      arancini: "https://images.unsplash.com/photo-1641955214009-c89099e84393?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      artichoke: "https://images.unsplash.com/photo-1551751299-1b51cab2694c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      burrataPistachio: "https://images.unsplash.com/photo-1633237308525-cd587cf71926?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      truffle: "https://images.unsplash.com/photo-1642354609876-5386fea5e7fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      carbonara: "https://images.unsplash.com/photo-1611270629569-8b357cb88da9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      lasagna: "https://images.unsplash.com/photo-1709429790175-b02bb1b19207?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      burrata: "https://images.unsplash.com/photo-1595587870672-c79b47875c6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      ravioli: "https://images.unsplash.com/photo-1766668413632-da08d0302bf7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      tiramisu: "https://images.unsplash.com/photo-1714385905983-6f8e06fffae1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      aperol: "https://images.unsplash.com/photo-1627558009791-2280bfc9fe14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      espresso: "https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      gelato: "https://images.unsplash.com/photo-1534706936160-d5ee67737249?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      pasta2: "https://images.unsplash.com/photo-1600803907087-f56d462fd26b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      scooter: "https://images.unsplash.com/photo-1613241811774-f75736a131bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80",
+      scooterYellow: "https://images.unsplash.com/photo-1598258500419-5d7895465a20?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80",
+      interior: "https://images.unsplash.com/photo-1691067987594-b1b7f84ba55a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1200&q=80",
+      interior2: "https://images.unsplash.com/photo-1596641069082-b1d5ac2b6fc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1200&q=80",
+      venice: "https://images.unsplash.com/photo-1498307833015-e7b400441eb8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80",
+      florence: "https://images.unsplash.com/photo-1687817997684-c9335cce7c5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80",
+      // Floating Hero card — currently parmesan wedge with grater
+      // Alternatives if this one doesn't look right:
+      //   olive oil:    https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5
+      //   san marzano:  https://images.unsplash.com/photo-1546470427-227df1e3ec77
+      //   peppers:      https://images.unsplash.com/photo-1583119912267-cc97c911e416
+      basil: "https://images.unsplash.com/photo-1452195100486-9cc805987862?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600&q=80",
+
+      // Travels section — iconic city landmarks (Unsplash)
+      cityRoma:    "https://images.unsplash.com/photo-1552832230-c0197dd311b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80", // Colosseum
+      // Alternative Milan photos if the main one fails:
+      //   1593693411515-c20261bcad6e (Duomo wide)
+      //   1605649461784-edc01e3d4f31 (Galleria interior)
+      //   1518730518541-d0843268c287 (street view)
+      cityMilano:  "https://images.unsplash.com/photo-1520440229-6469a149ac59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80", // Duomo di Milano
+      cityFirenze: "https://images.unsplash.com/photo-1543429776-2782fc8e1acd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80", // Florence Duomo skyline
+      cityVenezia: "https://images.unsplash.com/photo-1514890547357-a9ee288728e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80", // Venice canal with gondolas
+      // Alternative Naples photos if the main one doesn't load:
+      //   1516483638261-f4dbaf036963 (bay panorama with Vesuvius)
+      //   1597474682-65f97d4a3b4f (waterfront promenade)
+      //   1531572753322-ad063cecc140 (port view with mountains)
+      cityNapoli:  "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80", // Naples bay & Vesuvius
+    };
+
+    // ===== Unified food photography =====
+    // Each dish has a prompt. The site tries local files first (./assets/menu/<id>.jpg);
+    // those exist after you run download_menu_images.sh. Without local files, the
+    // <img onError> handler falls back to live AI generation via pollinations.ai.
+    //
+    // To avoid a 404 round-trip on every image when local files aren't yet generated,
+    // we probe ONCE on app start whether assets/menu/ exists.
+    const FOOD_STYLE = "professional food photography, rustic italian trattoria, dark wood table, warm cinematic lighting, overhead close-up, shallow depth of field, editorial style, appetizing, vibrant natural colors";
+
+    function dishImageLocal(dish) {
+      return `assets/menu/${dish.id}.jpg`;
+    }
+
+    function dishImageRemote(dish) {
+      const prompt = encodeURIComponent(`${dish.prompt}, ${FOOD_STYLE}`);
+      const seed = dish.id.replace(/[^0-9]/g, '') || '1';
+      return `https://image.pollinations.ai/prompt/${prompt}?width=600&height=600&model=flux&seed=${seed}&nologo=true&nofeed=true&enhance=false`;
+    }
+
+    // One-time probe: do local files exist? Stored in state via useLocalImageMode.
+    // If yes, all images come from disk (instant). If no, we skip the wasted 404
+    // request and use pollinations directly.
+    function useLocalImageMode() {
+      // null = still probing, true = use local, false = use remote
+      const [mode, setMode] = useState(null);
+      useEffect(() => {
+        let cancelled = false;
+        // Probe by loading a tiny invisible <img>. This works under file:// too,
+        // where fetch()/HEAD requests are blocked but <img> still loads files.
+        const probe = new Image();
+        probe.onload = () => { if (!cancelled) setMode('local'); };
+        probe.onerror = () => { if (!cancelled) setMode('remote'); };
+        probe.src = 'assets/menu/m1.jpg';
+        return () => { cancelled = true; };
+      }, []);
+      return mode;
+    }
+
+    // Resolve the right image URL given current mode.
+    function dishImage(dish, mode) {
+      if (mode === 'local') return dishImageLocal(dish);
+      if (mode === 'remote') return dishImageRemote(dish);
+      // Probe still running: serve a transparent 1x1 pixel so the slot stays
+      // empty (the pulsing "cucinando…" placeholder shows through).
+      return 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    }
+
+    // Fallback handler: if a local image is missing for some reason despite the
+    // probe saying "local", swap to pollinations on the fly.
+    function handleDishImgError(e, dish) {
+      const node = e.currentTarget;
+      if (node.dataset.fallback === '1') return;
+      node.dataset.fallback = '1';
+      node.src = dishImageRemote(dish);
+    }
+
+    const ImageModeContext = React.createContext(null);
+
+    const MENU = [
+      // Pizze
+      { id: "m1",  cat: "Pizza", name: "Margherita D.O.C.",     desc: "San Marzano, fior di latte, basilico, EVO",                 price: 14, tag: "wood-fired",
+        prompt: "wood-fired neapolitan margherita pizza, charred crust, fresh basil leaves, melted mozzarella, red tomato sauce, drizzle of olive oil" },
+      { id: "m2",  cat: "Pizza", name: "Margherita Classica",    desc: "Buffalo mozzarella, hand-torn basil, sea salt finish",      price: 15,
+        prompt: "classic margherita pizza with buffalo mozzarella di bufala, torn basil leaves, sea salt flakes, round whole pizza" },
+      { id: "m3",  cat: "Pizza", name: "Truffle Mushroom",       desc: "Porcini, cremini, taleggio, black truffle shavings",        price: 22, tag: "chef's pick",
+        prompt: "gourmet truffle mushroom pizza with porcini and cremini mushrooms, melted taleggio cheese, fresh black truffle shavings on top" },
+      { id: "m4",  cat: "Pizza", name: "Spicy Diavola",          desc: "Spicy 'nduja, smoked mozzarella, hot honey drizzle",        price: 17, tag: "hot",
+        prompt: "spicy diavola pizza with red nduja sausage, smoked mozzarella, drizzle of hot honey, chili flakes, wood-fired crust" },
+      { id: "m5",  cat: "Pizza", name: "Burrata & Prosciutto",   desc: "24m prosciutto di Parma, burrata di Puglia, rocket",        price: 21,
+        prompt: "pizza topped with fresh burrata cheese in center, slices of prosciutto di parma, fresh arugula, after baking" },
+      { id: "m6",  cat: "Pizza", name: "Quattro Formaggi",       desc: "Mozzarella, gorgonzola, fontina, parmigiano 24m",           price: 19,
+        prompt: "quattro formaggi four cheese pizza with melted mozzarella gorgonzola fontina and parmigiano, golden bubbly crust, no tomato sauce" },
+      { id: "m7",  cat: "Pizza", name: "Pesto Chicken",          desc: "Grilled chicken, basil pesto, sun-dried tomatoes, pine nuts", price: 20,
+        prompt: "pizza with green basil pesto base, grilled chicken pieces, sun-dried tomatoes, pine nuts scattered on top" },
+      { id: "m8",  cat: "Pizza", name: "Carbonara Pizza",        desc: "Guanciale, pecorino cream, egg yolk, cracked pepper",       price: 19, tag: "new",
+        prompt: "carbonara pizza with crispy guanciale bacon, creamy pecorino sauce, runny egg yolk in the center, cracked black pepper" },
+      { id: "m9",  cat: "Pizza", name: "Napoli Anchovy",         desc: "Cetara anchovies, capers, taggiasca olives, oregano",       price: 18,
+        prompt: "neapolitan pizza napoli with anchovy fillets, capers, black taggiasca olives, dried oregano, tomato sauce, no cheese" },
+      { id: "m10", cat: "Pizza", name: "Pistachio Mortadella",   desc: "Mortadella, Bronte pistachio cream, stracciatella",         price: 22, tag: "must try",
+        prompt: "pizza with bright green pistachio cream base, folded slices of pink mortadella, white stracciatella cheese dollops, crushed pistachios" },
+      { id: "m11", cat: "Pizza", name: "Parma & Arugula",        desc: "Prosciutto crudo, wild rocket, shaved parmigiano, lemon",   price: 20,
+        prompt: "thin crust pizza topped after baking with raw prosciutto di parma slices, fresh wild arugula leaves, shaved parmigiano flakes, lemon wedge" },
+
+      // Antipasti
+      { id: "m12", cat: "Antipasti", name: "Burrata al Pistachio",      desc: "Creamy burrata, Bronte pistachio crumble, EVO, honey",       price: 16, tag: "must try",
+        prompt: "fresh burrata cheese ball cut open with creamy interior on plate, topped with crushed bronte pistachios, drizzle of honey, olive oil" },
+      { id: "m13", cat: "Antipasti", name: "Smoked Ricotta Bruschetta", desc: "Charred sourdough, smoked ricotta, heirloom tomato, basil",  price: 11,
+        prompt: "bruschetta on charred sourdough toast, smoked ricotta spread, diced heirloom tomatoes, fresh basil leaves, served on wooden board" },
+      { id: "m14", cat: "Antipasti", name: "Crispy Polenta Bites",      desc: "Golden polenta squares, gorgonzola fonduta, walnut dust",    price: 12,
+        prompt: "crispy golden fried polenta cubes squares on plate, drizzle of gorgonzola cheese sauce fonduta, crushed walnuts on top" },
+      { id: "m15", cat: "Antipasti", name: "Prosciutto Crostini",       desc: "Toasted ciabatta, ricotta whip, prosciutto, fig jam",        price: 13,
+        prompt: "italian crostini on toasted ciabatta slices, whipped ricotta cheese spread, prosciutto folded on top, drizzle of fig jam" },
+      { id: "m16", cat: "Antipasti", name: "Truffle Burrata Toast",     desc: "Country bread, burrata, black truffle honey, micro herbs",  price: 17, tag: "chef's pick",
+        prompt: "rustic country bread toast topped with creamy burrata cheese, black truffle shavings, drizzle of truffle honey, micro herbs garnish" },
+      { id: "m17", cat: "Antipasti", name: "Roasted Tomato Focaccia",   desc: "House focaccia, slow-roasted cherry tomatoes, rosemary salt", price: 9,
+        prompt: "thick italian focaccia bread with dimples, topped with slow roasted cherry tomatoes, fresh rosemary sprigs, sea salt flakes" },
+      { id: "m18", cat: "Antipasti", name: "Parmesan Zucchini Fries",   desc: "Crispy zucchini batons, parmigiano crust, lemon aioli",      price: 10,
+        prompt: "crispy breaded zucchini fries sticks with golden parmesan crust, small bowl of lemon aioli dipping sauce, lemon wedge" },
+      { id: "m19", cat: "Antipasti", name: "Whipped Ricotta & Honey",   desc: "Cloud-light ricotta, chestnut honey, hazelnuts, sea salt",   price: 11,
+        prompt: "whipped fluffy ricotta cheese in bowl, drizzle of golden chestnut honey, toasted hazelnuts, flaky sea salt, with bread on side" },
+      { id: "m20", cat: "Antipasti", name: "Italian Street Arancini",   desc: "Saffron risotto balls, ragù centre, basil mayo dip",         price: 12, tag: "new",
+        prompt: "sicilian arancini, crispy golden fried saffron risotto balls cut open showing meat ragu filling, small bowl of basil aioli dip" },
+      { id: "m21", cat: "Antipasti", name: "Charred Artichoke Plate",   desc: "Roman-style carciofi, lemon, parmigiano shavings, EVO",      price: 14,
+        prompt: "roman style charred grilled artichokes carciofi alla romana, lemon wedges, shaved parmigiano cheese, drizzle of olive oil, served on plate" },
+      { id: "m22", cat: "Antipasti", name: "Burrata di Puglia",         desc: "Cherry tomato confit, basil oil, sourdough",                 price: 15,
+        prompt: "fresh burrata cheese ball cut open creamy center, cherry tomato confit, green basil oil drizzle, sourdough bread on side" },
+      { id: "m23", cat: "Antipasti", name: "Crudo di Parma",            desc: "24-month prosciutto, melon, fig jam, focaccia",              price: 16,
+        prompt: "italian charcuterie plate with prosciutto di parma slices, fresh cantaloupe melon wedges, fig jam, focaccia bread" },
+
+      // Pasta
+      { id: "m24", cat: "Pasta", name: "Tagliatelle al Tartufo", desc: "Hand-cut tagliatelle, black truffle, parmigiano 24m",  price: 24, tag: "chef's pick",
+        prompt: "creamy tagliatelle pasta with fresh black truffle shavings on top, parmigiano cheese, twirled in white pasta bowl" },
+      { id: "m25", cat: "Pasta", name: "Spaghetti Carbonara",    desc: "Guanciale, pecorino, egg yolk — no cream, mai",        price: 18,
+        prompt: "authentic spaghetti carbonara pasta with crispy guanciale, pecorino cheese, runny egg yolk, cracked black pepper, no cream" },
+      { id: "m26", cat: "Pasta", name: "Lasagna della Nonna",    desc: "Nine layers, beef ragù, béchamel, parmigiano",         price: 19,
+        prompt: "homemade italian lasagna slice showing layers of pasta sheets, beef ragu sauce, bechamel cream, melted parmigiano on top, golden crust" },
+      { id: "m27", cat: "Pasta", name: "Ravioli di Ricotta",     desc: "House-made, brown butter, sage, lemon zest",           price: 21,
+        prompt: "fresh handmade ricotta ravioli pasta on plate, golden brown butter sauce, crispy fried sage leaves, lemon zest sprinkled" },
+
+      // Dolci
+      { id: "m28", cat: "Dolci", name: "Tiramisù Classico",  desc: "Mascarpone, espresso-soaked savoiardi, cocoa",      price: 9, tag: "must try",
+        prompt: "classic italian tiramisu dessert square in glass dish, layers of mascarpone cream and espresso-soaked savoiardi ladyfingers, dusted with cocoa powder" },
+      { id: "m29", cat: "Dolci", name: "Pistachio Gelato",   desc: "Bronte pistachio, sea salt, olive oil drizzle",     price: 8,
+        prompt: "scoop of green bronte pistachio gelato ice cream in small bowl, crushed pistachios, drizzle of olive oil, flaky sea salt" },
+
+      // Bevande
+      { id: "m30", cat: "Bevande", name: "Aperol Spritz",    desc: "Aperol, prosecco, soda, orange wheel",              price: 11,
+        prompt: "orange aperol spritz cocktail in wine glass with ice cubes, orange wheel slice garnish, bubbles, on dark wood table" },
+      { id: "m31", cat: "Bevande", name: "Espresso Doppio",  desc: "Single-origin Sicilian roast, served bar-style",    price: 4,
+        prompt: "double espresso coffee in small white ceramic cup with golden crema on top, on saucer, italian bar style" },
+    ];
+
+    const CATEGORIES = ["All", "Pizza", "Antipasti", "Pasta", "Dolci", "Bevande"];
+
+    const BENEFITS = [
+      { icon: "wheat", title: "Pasta Fatta a Mano", desc: "Rolled by hand every morning at 6am. Tipo 00 flour, eggs from Romagna.", bg: "bg-pasta", rot: "-rotate-2" },
+      { icon: "flame", title: "Wood-Fired Oven", desc: "Naples-built oven, oak & olive wood, 480°C. Sixty-second pizzas.", bg: "bg-tomato text-cream-soft", rot: "rotate-2" },
+      { icon: "leaf", title: "Direct From Italy", desc: "San Marzano DOP, Sicilian olive oil, Parmigiano Reggiano 24-month.", bg: "bg-basil text-cream-soft", rot: "-rotate-1" },
+      { icon: "sparkles", title: "Trattoria Atmosphere", desc: "Candlelight, vinyl, low murmur. The kind of room you don't leave early.", bg: "bg-cream-soft", rot: "rotate-1" },
+      { icon: "clock", title: "Take-Away in 12'", desc: "Order on the way, walk in, walk out. Still hot when you sit down.", bg: "bg-parmesan", rot: "-rotate-2" },
+      { icon: "calendar-days", title: "Easy Reservations", desc: "Book your table in seconds. We hold it with a glass of prosecco.", bg: "bg-wine text-cream-soft", rot: "rotate-2" },
+    ];
+
+    const CITIES = [
+      { name: "ROMA", img: img.cityRoma, top: "8%", left: "6%", rot: "-6deg" },
+      { name: "MILANO", img: img.cityMilano, top: "18%", left: "38%", rot: "4deg" },
+      { name: "NAPOLI", img: img.cityNapoli, top: "52%", left: "18%", rot: "-3deg" },
+      { name: "FIRENZE", img: img.cityFirenze, top: "44%", left: "58%", rot: "5deg" },
+      { name: "VENEZIA", img: img.cityVenezia, top: "70%", left: "72%", rot: "-4deg" },
+    ];
+
+    /* ====================== HOOKS ====================== */
+    function useReveal() {
+      useEffect(() => {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+        const SEL = '[data-reveal], [data-reveal-rot]';
+
+        // CRITICAL: Don't start observing until AFTER the page loader has
+        // faded out. The loader stays for ~800ms minimum then fades 600ms,
+        // so we wait until it's fully gone — that way Hero animations
+        // actually play instead of being skipped while the loader covered them.
+        let cancelled = false;
+        const start = () => {
+          if (cancelled) return;
+          // Two rAFs guarantee the browser has painted the initial
+          // opacity:0 / translate state before we add the `.in` class.
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if (cancelled) return;
+              document.querySelectorAll(SEL).forEach((el) => io.observe(el));
+            });
+          });
+        };
+
+        const loader = document.getElementById('page-loader');
+        if (loader) {
+          // Wait for loader to be removed from the DOM, then start reveals.
+          const checkLoader = setInterval(() => {
+            if (!document.getElementById('page-loader')) {
+              clearInterval(checkLoader);
+              start();
+            }
+          }, 80);
+          // Safety: start anyway after 3 seconds in case loader hangs
+          setTimeout(() => { clearInterval(checkLoader); start(); }, 3000);
+        } else {
+          start();
+        }
+
+        // Catch dynamically-added elements (e.g., menu items after filter change)
+        const mo = new MutationObserver((mutations) => {
+          mutations.forEach((m) => {
+            m.addedNodes.forEach((node) => {
+              if (node.nodeType !== 1) return;
+              if (node.matches && node.matches(SEL)) io.observe(node);
+              if (node.querySelectorAll) {
+                node.querySelectorAll(SEL).forEach((el) => {
+                  if (!el.classList.contains('in')) io.observe(el);
+                });
+              }
+            });
+          });
+        });
+        mo.observe(document.body, { childList: true, subtree: true });
+
+        return () => { cancelled = true; io.disconnect(); mo.disconnect(); };
+      }, []);
+    }
+
+    function useSectionScrollProgress(ref) {
+      const [p, setP] = useState(0);
+      useEffect(() => {
+        let rafId = null;
+        const update = () => {
+          rafId = null;
+          const el = ref.current;
+          if (!el) return;
+          const rect = el.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const total = rect.height - vh;
+          if (total <= 0) { setP(0); return; }
+          const scrolled = -rect.top;
+          setP(Math.max(0, Math.min(1, scrolled / total)));
+        };
+        const onScroll = () => {
+          if (rafId == null) rafId = requestAnimationFrame(update);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+        return () => {
+          window.removeEventListener('scroll', onScroll);
+          window.removeEventListener('resize', update);
+          if (rafId) cancelAnimationFrame(rafId);
+        };
+      }, [ref]);
+      return p;
+    }
+
+    /* ====================== ATOMS ====================== */
+    function Sticker({ children, className = '', rotate = -6, color = 'bg-pasta text-espresso' }) {
+      return (
+        <span
+          className={`inline-flex items-center gap-1 px-3 py-1 rounded-full border-2 border-espresso shadow-[3px_3px_0_0_var(--espresso)] font-display text-xs tracking-wide uppercase ${color} ${className}`}
+          style={{ transform: `rotate(${rotate}deg)` }}
+        >
+          {children}
+        </span>
+      );
+    }
+
+    function PillButton({ children, variant = 'primary', className = '', type = 'button', onClick, ...rest }) {
+      const styles =
+        variant === 'primary'
+          ? 'bg-tomato text-cream-soft hover:bg-tomato-deep'
+          : variant === 'cream'
+          ? 'bg-cream-soft text-espresso hover:bg-white'
+          : 'bg-transparent text-espresso hover:bg-espresso hover:text-cream-soft';
+      return (
+        <button
+          type={type}
+          onClick={onClick}
+          {...rest}
+          className={`group inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-espresso font-display uppercase tracking-wider text-sm shadow-[4px_4px_0_0_var(--espresso)] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--espresso)] hover:-translate-y-0.5 ${styles} ${className}`}
+        >
+          {children}
+        </button>
+      );
+    }
+
+    /* ====================== NAV ====================== */
+    function Nav() {
+      const [open, setOpen] = useState(false);
+      return (
+        <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 pt-4">
+          <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+            <a href="#top" className="flex items-center gap-2 bg-cream-soft border-2 border-espresso rounded-2xl px-3 py-2 shadow-[4px_4px_0_0_var(--espresso)] -rotate-2 transition-all duration-300 hover:rotate-2 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_var(--espresso)]">
+              <span className="text-tomato font-display text-xl leading-none">FORNO</span>
+              <span className="font-hand text-espresso text-xl leading-none">.</span>
+            </a>
+            <nav className="hidden md:flex items-center gap-1 bg-cream-soft border-2 border-espresso rounded-full px-2 py-2 shadow-[4px_4px_0_0_var(--espresso)]">
+              {["Story", "Travels", "Menu", "Reviews", "Visit"].map((l) => (
+                <a key={l} href={`#${l.toLowerCase()}`} className="px-4 py-1.5 rounded-full text-sm font-medium uppercase tracking-wide hover:bg-espresso hover:text-cream-soft hover:-translate-y-0.5 transition-all duration-200">
+                  {l}
+                </a>
+              ))}
+            </nav>
+            <div className="flex items-center gap-2">
+              <a href="#book" className="hidden sm:inline-block">
+                <PillButton>Book a table</PillButton>
+              </a>
+              <button
+                onClick={() => setOpen((o) => !o)}
+                aria-label="menu"
+                className="md:hidden bg-cream-soft border-2 border-espresso rounded-full p-3 shadow-[4px_4px_0_0_var(--espresso)]"
+              >
+                <Icon name={open ? 'x' : 'menu'} size={18} />
+              </button>
+            </div>
+          </div>
+          {open && (
+            <div className="md:hidden mt-3 max-w-[1400px] mx-auto bg-cream-soft border-2 border-espresso rounded-2xl p-4 shadow-[4px_4px_0_0_var(--espresso)]">
+              {["Story", "Travels", "Menu", "Book", "Reviews", "Visit"].map((l) => (
+                <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setOpen(false)} className="block py-2 font-display uppercase tracking-wide">
+                  {l}
+                </a>
+              ))}
+            </div>
+          )}
+        </header>
+      );
+    }
+
+    /* ====================== HERO ====================== */
+    function Hero() {
+      return (
+        <section id="top" className="relative pt-20 md:pt-24 pb-4 md:pb-6 px-4 md:px-8 overflow-hidden min-h-screen flex flex-col">
+          <div className="max-w-[1400px] mx-auto relative flex-1 flex flex-col justify-center w-full">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center">
+              <div className="md:col-span-7 relative z-10">
+                <div data-reveal data-from="pop" style={{ transitionDelay: '0.2s' }} className="hidden md:inline-block mb-2">
+                  <Sticker rotate={-6} color="bg-basil text-cream-soft">
+                    <Icon name="leaf" size={12} /> est. 1987 · trastevere
+                  </Sticker>
+                </div>
+                <p data-reveal className="font-hand text-tomato text-2xl md:text-3xl mb-1 -rotate-2 inline-block">ciao, fame!</p>
+                <h1 data-reveal style={{ transitionDelay: '0.1s' }} className="font-display text-tomato leading-[0.85] text-[clamp(3rem,9vw,8rem)] uppercase">
+                  Pasta
+                  <span className="block">
+                    worth
+                    <span className="relative inline-block mx-2">
+                      <span className="relative z-10">crossing</span>
+                      <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 14" preserveAspectRatio="none">
+                        <path d="M2 8 Q 50 -2 100 6 T 198 8" stroke="var(--pasta)" strokeWidth="6" fill="none" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  </span>
+                  <span className="block">the city for</span>
+                </h1>
+                <p data-reveal style={{ transitionDelay: '0.25s' }} className="mt-4 max-w-md text-espresso/80 text-sm md:text-base leading-relaxed">
+                  A tiny Roman kitchen with big appetites. Hand-rolled pasta, wood-fired pizza, and the kind of tiramisù
+                  your nonna would approve of.
+                </p>
+                <div data-reveal style={{ transitionDelay: '0.4s' }} className="mt-5 flex flex-wrap gap-3">
+                  <a href="#book"><PillButton>Book a table <Icon name="chevron-right" size={16} className="transition-transform group-hover:translate-x-1" /></PillButton></a>
+                  <a href="#menu"><PillButton variant="cream">Explore menu</PillButton></a>
+                </div>
+                <div data-reveal style={{ transitionDelay: '0.55s' }} className="mt-5 flex items-center gap-3 text-sm">
+                  <div className="flex">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <span
+                        key={i}
+                        data-reveal
+                        data-from="pop"
+                        style={{ transitionDelay: `${0.7 + i * 0.08}s` }}
+                        className="inline-block"
+                      >
+                        <Icon name="star" size={14} fill="currentColor" className="text-tomato" />
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-espresso/70 text-xs md:text-sm">4.9 · 1,284 reviews · Time Out pick 2025</span>
+                </div>
+              </div>
+
+              <div className="md:col-span-5 relative h-[280px] md:h-[440px] order-first md:order-last">
+                <div className="absolute inset-0 flex items-center justify-center anim-pop">
+                  <div className="anim-float relative w-[78%] md:w-[88%] aspect-square rounded-full overflow-hidden border-[5px] md:border-[6px] border-espresso shadow-[8px_8px_0_0_var(--espresso)] md:shadow-[10px_10px_0_0_var(--espresso)]" style={{ '--r': '0deg' }}>
+                    <img src={img.pizza} alt="Wood-fired margherita pizza" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+                {/* Wood-fired daily — top-left pill */}
+                <div className="hidden md:block absolute -top-2 left-0 z-20" data-reveal data-from="pop" style={{ transitionDelay: '0.5s' }}>
+                  <Sticker rotate={-8} color="bg-tomato text-cream-soft">
+                    <Icon name="flame" size={12} /> wood-fired daily
+                  </Sticker>
+                </div>
+
+                {/* Espresso card — bottom-left */}
+                <div className="hidden md:block absolute bottom-0 -left-2 w-28 lg:w-32 rounded-2xl overflow-hidden border-4 border-espresso shadow-[6px_6px_0_0_var(--espresso)] bg-tomato rotate-[-8deg]">
+                  <div className="h-20 lg:h-24 flex items-center justify-center p-2">
+                    <svg viewBox="0 0 100 80" className="w-full h-full">
+                      {/* Steam wisps */}
+                      <path d="M 38 18 Q 32 12 38 6" stroke="#fbf3e2" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.85" />
+                      <path d="M 50 18 Q 44 12 50 6" stroke="#fbf3e2" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.85" />
+                      <path d="M 62 18 Q 56 12 62 6" stroke="#fbf3e2" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.85" />
+                      {/* Cup body */}
+                      <path d="M 28 28 L 28 58 Q 28 68 38 68 L 62 68 Q 72 68 72 58 L 72 28 Z" fill="#fbf3e2" stroke="#3a241a" strokeWidth="3.5" strokeLinejoin="round" />
+                      {/* Handle */}
+                      <path d="M 72 36 Q 86 36 86 46 Q 86 56 72 56" stroke="#3a241a" strokeWidth="3.5" fill="none" strokeLinejoin="round" />
+                      {/* Saucer */}
+                      <ellipse cx="50" cy="71" rx="32" ry="5" fill="#fbf3e2" stroke="#3a241a" strokeWidth="3.5" />
+                      {/* Coffee inside */}
+                      <ellipse cx="50" cy="32" rx="20" ry="4" fill="#3a241a" />
+                    </svg>
+                  </div>
+                  <div className="px-2 py-1 text-center font-display uppercase text-xs bg-cream-soft border-t-2 border-espresso text-espresso">€4 · doppio</div>
+                </div>
+
+                {/* Aperol Spritz card — top-right */}
+                <div className="hidden md:block absolute top-4 -right-2 w-24 lg:w-28 rounded-2xl overflow-hidden border-4 border-espresso shadow-[6px_6px_0_0_var(--espresso)] bg-pasta rotate-[10deg]">
+                  <div className="h-20 lg:h-24 flex items-center justify-center p-2">
+                    <svg viewBox="0 0 80 90" className="w-full h-full">
+                      {/* Wine glass bowl */}
+                      <path d="M 18 18 L 62 18 Q 60 48 40 56 Q 20 48 18 18 Z" fill="#e8702a" stroke="#3a241a" strokeWidth="3.5" strokeLinejoin="round" />
+                      {/* Liquid surface highlight */}
+                      <ellipse cx="40" cy="21" rx="20" ry="3" fill="#f2c94c" stroke="#3a241a" strokeWidth="2" />
+                      {/* Ice cube */}
+                      <rect x="32" y="28" width="9" height="9" fill="#fbf3e2" stroke="#3a241a" strokeWidth="1.8" rx="1" opacity="0.95" />
+                      <rect x="42" y="34" width="7" height="7" fill="#fbf3e2" stroke="#3a241a" strokeWidth="1.8" rx="1" opacity="0.85" />
+                      {/* Orange slice on rim */}
+                      <circle cx="58" cy="20" r="7" fill="#f2c94c" stroke="#3a241a" strokeWidth="2.5" />
+                      <line x1="58" y1="13" x2="58" y2="27" stroke="#3a241a" strokeWidth="1.5" />
+                      <line x1="51" y1="20" x2="65" y2="20" stroke="#3a241a" strokeWidth="1.5" />
+                      {/* Stem */}
+                      <line x1="40" y1="56" x2="40" y2="76" stroke="#3a241a" strokeWidth="3.5" strokeLinecap="round" />
+                      {/* Base */}
+                      <ellipse cx="40" cy="80" rx="14" ry="3" fill="#fbf3e2" stroke="#3a241a" strokeWidth="3" />
+                    </svg>
+                  </div>
+                  <div className="px-2 py-1 text-center font-display uppercase text-xs bg-cream-soft border-t-2 border-espresso text-espresso">spritz hour</div>
+                </div>
+
+                {/* 60-sec pizza — bottom-right pill */}
+                <div className="absolute bottom-12 right-2 md:right-0 z-20">
+                  <Sticker rotate={-10} color="bg-pasta">
+                    <Icon name="sparkles" size={12} /> 60-sec pizza
+                  </Sticker>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Marquee */}
+          <div className="mt-10 md:mt-14 -mx-4 md:-mx-8 border-y-2 border-espresso bg-tomato text-cream-soft overflow-hidden shrink-0">
+            <div className="flex anim-marquee whitespace-nowrap py-2 md:py-3 font-display uppercase text-base md:text-lg tracking-wider">
+              {[0, 1].map((k) => (
+                <div key={k} className="flex items-center gap-8 px-4 shrink-0">
+                  {["fatto a mano", "★", "wood-fired", "★", "san marzano DOP", "★", "open till midnight", "★", "byo nonna", "★", "vinyl & vino", "★"].map((t, i) => (
+                    <span key={i}>{t}</span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ====================== BENEFITS ====================== */
+    function Benefits() {
+      return (
+        <section id="story" className="relative px-4 md:px-8 py-24">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+              <div>
+                <div data-reveal>
+                  <Sticker rotate={-4} color="bg-basil text-cream-soft">
+                    <Icon name="leaf" size={12} /> the FORNO way
+                  </Sticker>
+                </div>
+                <h2 data-reveal style={{ transitionDelay: '0.1s' }} className="h2-section mt-3 text-tomato">
+                  Six small <br />
+                  <span className="text-espresso">obsessions.</span>
+                </h2>
+              </div>
+              <p data-reveal data-from="right" style={{ transitionDelay: '0.2s' }} className="max-w-sm text-espresso/80">
+                We didn't open a restaurant to be efficient. We opened it to argue about salt, ferment dough for 48 hours,
+                and serve plates that taste like somewhere.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {BENEFITS.map((b, i) => (
+                <div
+                  key={b.title}
+                  data-reveal
+                  data-from={i % 2 === 0 ? 'tilt' : 'tilt-r'}
+                  style={{ transitionDelay: `${(i % 3) * 0.1 + Math.floor(i / 3) * 0.05}s` }}
+                  className={`group ${b.bg} border-2 border-espresso rounded-3xl p-7 shadow-[6px_6px_0_0_var(--espresso)] ${b.rot} relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:rotate-0 hover:shadow-[8px_8px_0_0_var(--espresso)]`}
+                >
+                  <div className="group-icon-pop w-14 h-14 rounded-2xl border-2 border-espresso bg-cream-soft text-espresso flex items-center justify-center shadow-[3px_3px_0_0_var(--espresso)] mb-5">
+                    <Icon name={b.icon} size={26} />
+                  </div>
+                  <h3 className="font-display uppercase text-2xl leading-tight mb-2">{b.title}</h3>
+                  <p className="text-sm opacity-90 leading-relaxed">{b.desc}</p>
+                  <div className="absolute -bottom-4 -right-4 font-display text-7xl opacity-10 select-none transition-transform duration-500 group-hover:scale-125 group-hover:rotate-12">
+                    0{i + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ====================== REVIEWS ====================== */
+    const REVIEWS = [
+      {
+        id: 1,
+        quote: "I came in for one slice and walked out an hour later having ordered the entire menu. The tagliatelle al tartufo ruined me for all other pasta.",
+        author: "Sofia Bertinelli",
+        role: "Food journalist",
+        source: "Time Out · 2025",
+        rating: 5,
+        avatarSeed: "sofia-3",
+      },
+      {
+        id: 2,
+        quote: "The wood-fired Margherita reminded me of summers in my nonna's kitchen — except I didn't have to do the dishes after.",
+        author: "Marco De Luca",
+        role: "Trastevere local",
+        source: "Google",
+        rating: 5,
+        avatarSeed: "marco-7",
+      },
+      {
+        id: 3,
+        quote: "We crossed the city for the tiramisù and stayed for the vinyl. The kind of place you don't realize you needed until you're inside.",
+        author: "James & Aria Holt",
+        role: "London visitors",
+        source: "Tripadvisor",
+        rating: 5,
+        avatarSeed: "aria-2",
+      },
+      {
+        id: 4,
+        quote: "Best burrata I've had outside of Puglia. The chef came out to ask how it was — and I almost cried into the bread.",
+        author: "Elena Castellani",
+        role: "Chef · Milan",
+        source: "Instagram",
+        rating: 5,
+        avatarSeed: "elena-9",
+      },
+      {
+        id: 5,
+        quote: "Booked a table for two, ended up sharing limoncello shots with the owners' uncle at midnight. This is what Roma is supposed to feel like.",
+        author: "Nathan Olufemi",
+        role: "Food blogger",
+        source: "Google",
+        rating: 5,
+        avatarSeed: "nate-4",
+      },
+      {
+        id: 6,
+        quote: "The carbonara has no cream, no garlic, no apologies. Just guanciale, pecorino, eggs, pepper. Five stars from a Roman.",
+        author: "Giulia Romano",
+        role: "Roma born and raised",
+        source: "Tripadvisor",
+        rating: 5,
+        avatarSeed: "giulia-11",
+      },
+      {
+        id: 7,
+        quote: "Came for date night, left with a recipe for nonna's biscotti written on a napkin. Where else does that happen?",
+        author: "Priya & Sam Mehta",
+        role: "Anniversary dinner",
+        source: "Google",
+        rating: 5,
+        avatarSeed: "priya-6",
+      },
+      {
+        id: 8,
+        quote: "Quattro formaggi pizza with figs as a special. I'd marry it. Already started planning the seating arrangement.",
+        author: "Tomás Reyes",
+        role: "Wine sommelier",
+        source: "Instagram",
+        rating: 5,
+        avatarSeed: "tomas-2",
+      },
+      {
+        id: 9,
+        quote: "Took my picky 7-year-old who refuses everything except plain pasta. She licked the plate. Forno is officially the family's emergency contact now.",
+        author: "Hannah Kowalski",
+        role: "Mom of three",
+        source: "Tripadvisor",
+        rating: 5,
+        avatarSeed: "hannah-8",
+      },
+      {
+        id: 10,
+        quote: "It's small, it's loud, the music's too loud, you might wait. Worth every minute. The artichokes alone deserve a chapter in a cookbook.",
+        author: "Lorenzo Bianchi",
+        role: "Food critic · La Repubblica",
+        source: "La Repubblica · 2025",
+        rating: 5,
+        avatarSeed: "lorenzo-5",
+      },
+    ];
+
+    function Reviews() {
+      const scrollerRef = useRef(null);
+      const [scrollState, setScrollState] = useState({ scrollLeft: 0, maxScroll: 0 });
+
+      // Update scroll state on scroll/resize so arrows enable/disable and the
+      // progress bar reflects current position.
+      useEffect(() => {
+        const el = scrollerRef.current;
+        if (!el) return;
+        const update = () => {
+          setScrollState({
+            scrollLeft: el.scrollLeft,
+            maxScroll: el.scrollWidth - el.clientWidth,
+          });
+        };
+        update();
+        el.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        return () => {
+          el.removeEventListener('scroll', update);
+          window.removeEventListener('resize', update);
+        };
+      }, []);
+
+      const scrollByCard = (dir) => {
+        const el = scrollerRef.current;
+        if (!el) return;
+        // Card width + gap (gap-5 = 20px on mobile, gap-6 = 24px md+)
+        const firstCard = el.querySelector('[data-card]');
+        const step = firstCard ? firstCard.offsetWidth + 24 : 380;
+        el.scrollBy({ left: dir * step, behavior: 'smooth' });
+      };
+
+      const atStart = scrollState.scrollLeft <= 1;
+      const atEnd = scrollState.scrollLeft >= scrollState.maxScroll - 1;
+      const progress = scrollState.maxScroll > 0
+        ? scrollState.scrollLeft / scrollState.maxScroll
+        : 0;
+
+      return (
+        <section id="reviews" className="relative px-4 md:px-8 py-20 md:py-24 overflow-hidden">
+          <div className="max-w-[1400px] mx-auto">
+            {/* Header — sticker on a single row with H2 */}
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-14">
+              <div className="flex flex-wrap items-center gap-4">
+                <h2 data-reveal className="h2-section text-tomato">
+                  What they're <span className="text-espresso">saying.</span>
+                </h2>
+                <div data-reveal style={{ transitionDelay: '0.1s' }} className="inline-flex items-center gap-2 bg-cream-soft border-2 border-espresso rounded-full px-3 py-1.5 shadow-[3px_3px_0_0_var(--espresso)]">
+                  <div className="flex">
+                    {[0,1,2,3,4].map(k => (
+                      <Icon key={k} name="star" size={12} fill="currentColor" className="text-tomato" />
+                    ))}
+                  </div>
+                  <span className="font-display uppercase text-xs tracking-wide">4.9 · 1,284 reviews</span>
+                </div>
+              </div>
+              <p data-reveal data-from="right" style={{ transitionDelay: '0.2s' }} className="max-w-sm text-espresso/80 text-sm md:text-base">
+                A handful of our favourites — the kind we keep printed on the kitchen wall.
+              </p>
+            </div>
+
+            {/* Scroller — bleeds slightly outside the container on the right
+                so the user sees a "peek" of the next card on first paint. */}
+            <div
+              ref={scrollerRef}
+              className="reviews-scroller flex gap-5 md:gap-6 overflow-x-auto -mx-4 md:-mx-8 px-4 md:px-8 py-4"
+            >
+              {REVIEWS.map((r, i) => (
+                <div
+                  key={r.id}
+                  data-card
+                  data-reveal
+                  style={{ transitionDelay: `${Math.min(i, 3) * 0.06}s` }}
+                  className="group bg-cream-soft border-2 border-espresso rounded-3xl p-6 md:p-7 shadow-[6px_6px_0_0_var(--espresso)] transition-shadow duration-300 hover:shadow-[8px_8px_0_0_var(--espresso)] flex flex-col shrink-0 w-[85%] sm:w-[55%] md:w-[420px]"
+                >
+                  {/* Top row: stars + source */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: r.rating }).map((_, k) => (
+                        <Icon key={k} name="star" size={14} fill="currentColor" className="text-tomato" />
+                      ))}
+                    </div>
+                    <span className="text-xs uppercase tracking-wider text-espresso/55 font-medium">{r.source}</span>
+                  </div>
+
+                  {/* Quote */}
+                  <p className="text-base md:text-lg leading-relaxed text-espresso flex-1">
+                    “{r.quote}”
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3 mt-6 pt-5 border-t border-espresso/15">
+                    <img
+                      src={`https://api.dicebear.com/9.x/personas/svg?seed=${r.avatarSeed}&backgroundColor=f6ecd9,fbf3e2,efd07a&radius=50`}
+                      alt={r.author}
+                      loading="lazy"
+                      className="w-10 h-10 rounded-full border-2 border-espresso bg-cream-soft object-cover"
+                    />
+                    <div>
+                      <div className="font-display uppercase text-sm leading-tight">{r.author}</div>
+                      <div className="text-xs opacity-65 mt-0.5">{r.role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom row — progress bar (left) + arrows (right, desktop only) */}
+            <div className="mt-8 flex items-center gap-4 md:gap-6">
+              <div className="relative h-4 bg-cream-soft border-2 border-espresso rounded-full flex-1 max-w-md overflow-hidden shadow-[3px_3px_0_0_var(--espresso)]">
+                <div
+                  className="absolute inset-y-0 left-0 bg-tomato rounded-full transition-all duration-150"
+                  style={{ width: `${Math.max(8, progress * 100)}%` }}
+                />
+              </div>
+              <span className="font-hand text-tomato text-2xl -rotate-3 leading-none whitespace-nowrap">
+                swipe for more
+              </span>
+              <div className="hidden md:flex items-center gap-3 ml-auto">
+                <button
+                  onClick={() => scrollByCard(-1)}
+                  disabled={atStart}
+                  aria-label="Previous reviews"
+                  className="w-11 h-11 rounded-full border-2 border-espresso bg-cream-soft shadow-[3px_3px_0_0_var(--espresso)] hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center justify-center"
+                >
+                  <Icon name="chevron-right" size={18} className="rotate-180" />
+                </button>
+                <button
+                  onClick={() => scrollByCard(1)}
+                  disabled={atEnd}
+                  aria-label="Next reviews"
+                  className="w-11 h-11 rounded-full border-2 border-espresso bg-tomato text-cream-soft shadow-[3px_3px_0_0_var(--espresso)] hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center justify-center"
+                >
+                  <Icon name="chevron-right" size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ====================== TRAVELS ====================== */
+    // Cities placed alternating left/right down a long scrollable section.
+    // `side: 'left'` uses `left: x`; `side: 'right'` uses `right: x` (prevents overflow on small screens).
+    // `y` is % of the scene's height — scene is several screens tall.
+    const TRAVEL_CITIES = [
+      { name: "ROMA",    img: img.cityRoma,    side: 'left',  x: '4%', y: '2%',  rot: -5 },
+      { name: "MILANO",  img: img.cityMilano,  side: 'right', x: '3%', y: '22%', rot:  4 },
+      { name: "FIRENZE", img: img.cityFirenze, side: 'left',  x: '5%', y: '44%', rot: -3 },
+      { name: "VENEZIA", img: img.cityVenezia, side: 'right', x: '4%', y: '64%', rot:  5 },
+      { name: "NAPOLI",  img: img.cityNapoli,  side: 'left',  x: '7%', y: '85%', rot: -4 },
+    ];
+
+    // One continuous path winding through all cities. Coords in 0–100 viewBox.
+    // Approximate card centers: ROMA(15,12), MILANO(80,30), FIRENZE(20,52), VENEZIA(80,72), NAPOLI(22,92).
+    const TRAVEL_PATH = "M 15 10 C 45 4, 78 12, 80 28 C 82 44, 18 38, 20 52 C 22 64, 88 64, 80 72 C 70 84, 8 80, 22 92";
+
+    function Travels() {
+      const sectionRef = useRef(null);
+      const pathRef = useRef(null);
+      const planeRef = useRef(null);
+      const svgRef = useRef(null);
+      const progress = useSectionScrollProgress(sectionRef);
+
+      // Move the airplane along the SVG path on every scroll-progress change.
+      useEffect(() => {
+        const path = pathRef.current;
+        const plane = planeRef.current;
+        const svg = svgRef.current;
+        if (!path || !plane || !svg) return;
+
+        let total;
+        try { total = path.getTotalLength(); } catch (e) { return; }
+        if (!total) return;
+
+        const dist = total * progress;
+        const pt = path.getPointAtLength(dist);
+
+        // Sample a small step ahead & behind to compute tangent direction.
+        const behind = path.getPointAtLength(Math.max(0, dist - 1.5));
+        const ahead  = path.getPointAtLength(Math.min(total, dist + 1.5));
+
+        // Convert path-space delta into screen-space for visually correct rotation,
+        // since preserveAspectRatio="none" stretches the viewBox non-uniformly.
+        const rect = svg.getBoundingClientRect();
+        const dx = (ahead.x - behind.x) / 100 * rect.width;
+        const dy = (ahead.y - behind.y) / 100 * rect.height;
+
+        let angle = 0;
+        if (Math.abs(dx) + Math.abs(dy) > 0.01) {
+          angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        }
+
+        plane.style.left = `${pt.x}%`;
+        plane.style.top = `${pt.y}%`;
+        // +90° because the plane SVG points UP by default
+        plane.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
+      }, [progress]);
+
+      return (
+        <section
+          ref={sectionRef}
+          id="travels"
+          className="relative bg-pasta overflow-hidden"
+        >
+          {/* Top cream "dune" divider */}
+          <svg
+            className="absolute top-0 left-0 w-full h-[50px] md:h-[90px] z-10 pointer-events-none block"
+            viewBox="0 0 1440 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,0 L1440,0 L1440,38 C1100,95 720,8 360,60 C180,86 60,28 0,52 Z"
+              fill="var(--cream)"
+            />
+          </svg>
+
+          <div className="relative max-w-[1400px] mx-auto px-4 md:px-8 pt-28 md:pt-40 pb-28 md:pb-40">
+            {/* Header */}
+            <div className="text-center mb-6 md:mb-10 relative z-10" data-reveal>
+              <Sticker rotate={-3} color="bg-tomato text-cream-soft">
+                <Icon name="map-pin" size={12} /> 1,200 km of recipes
+              </Sticker>
+            </div>
+            <h2
+              data-reveal
+              style={{ transitionDelay: '0.1s' }}
+              className="h2-section text-tomato text-center relative z-10"
+            >
+              ITALY <br /> <span className="text-espresso">TRAVELS</span> <br /> WITH YOU
+            </h2>
+            <p data-reveal style={{ transitionDelay: '0.25s' }} className="text-center max-w-xl mx-auto mt-10 md:mt-14 text-espresso/85 text-sm md:text-base relative z-10">
+              Every dish is a postcard. Scroll along the route — our chefs trace recipes
+              from Roma's trattorias all the way down to Napoli's pizzerias.
+            </p>
+
+            {/* Long scrolling scene */}
+            <div
+              className="relative mt-14 md:mt-20"
+              style={{ height: 'clamp(1900px, 260vh, 3000px)' }}
+            >
+              {/* Dashed path layer (behind everything) */}
+              <svg
+                ref={svgRef}
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                <path
+                  ref={pathRef}
+                  d={TRAVEL_PATH}
+                  stroke="var(--parmesan-deep)"
+                  strokeWidth="3"
+                  strokeDasharray="2.2 1.8"
+                  strokeLinecap="round"
+                  fill="none"
+                  vectorEffect="non-scaling-stroke"
+                  opacity="0.85"
+                />
+              </svg>
+
+              {/* Airplane — flies along the path on scroll */}
+              <div
+                ref={planeRef}
+                className="absolute z-30 pointer-events-none"
+                style={{ left: '15%', top: '10%', willChange: 'transform, left, top' }}
+              >
+                <svg
+                  className="w-16 h-16 md:w-24 md:h-24"
+                  viewBox="0 0 24 24"
+                  fill="var(--tomato)"
+                  stroke="var(--cream-soft)"
+                  strokeWidth="0.7"
+                  strokeLinejoin="round"
+                  style={{ filter: 'drop-shadow(3px 3px 0 rgba(58,36,26,0.85))' }}
+                  aria-hidden="true"
+                >
+                  <path d="M11 1.5 L13 1.5 L13 9 L23 13.5 L23 15.5 L13 13 L13 18 L16 20 L16 22 L12 21.2 L8 22 L8 20 L11 18 L11 13 L1 15.5 L1 13.5 L11 9 Z" />
+                </svg>
+              </div>
+
+              {/* City cards */}
+              {TRAVEL_CITIES.map((c, i) => {
+                // Label appears when airplane reaches this city.
+                // 5 cities = thresholds at 0, 0.25, 0.5, 0.75, 1.0.
+                // Subtract a small offset so the label shows up just BEFORE the
+                // plane lands, so the user catches the reveal in their eyeline.
+                const reachThreshold = (i / (TRAVEL_CITIES.length - 1)) - 0.04;
+                const labelVisible = progress >= reachThreshold;
+                return (
+                <div
+                  key={c.name}
+                  data-reveal-rot
+                  className="absolute w-[64vw] max-w-[320px] sm:max-w-[400px] md:max-w-[500px] z-20"
+                  style={{
+                    [c.side === 'right' ? 'right' : 'left']: c.x,
+                    top: c.y,
+                    '--final-rot': `${c.rot}deg`,
+                    transitionDelay: `${(i % 3) * 0.08}s`,
+                  }}
+                >
+                  <div className="rounded-3xl overflow-hidden border-[5px] border-espresso shadow-[12px_12px_0_0_var(--espresso)] bg-cream-soft">
+                    <img
+                      src={c.img}
+                      alt={c.name}
+                      loading="lazy"
+                      className="w-full h-56 sm:h-72 md:h-96 object-cover"
+                    />
+                  </div>
+                  <div
+                    className="absolute -top-4 -right-4"
+                    style={{
+                      opacity: labelVisible ? 1 : 0,
+                      transform: labelVisible
+                        ? 'scale(1) rotate(0deg)'
+                        : 'scale(0.5) rotate(-15deg)',
+                      transition: 'opacity 0.5s cubic-bezier(0.34, 1.6, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.8, 0.64, 1)',
+                      pointerEvents: labelVisible ? 'auto' : 'none',
+                    }}
+                  >
+                    <span
+                      className="inline-flex items-center gap-1 px-5 py-2 rounded-full border-2 border-espresso shadow-[4px_4px_0_0_var(--espresso)] font-display text-base md:text-lg tracking-wide uppercase bg-tomato text-cream-soft"
+                      style={{ transform: 'rotate(6deg)', display: 'inline-flex' }}
+                    >
+                      {c.name}
+                    </span>
+                  </div>
+                </div>
+                );
+              })}
+            </div>
+
+            {/* "Arrivati" end sticker */}
+            <div className="text-center mt-10 md:mt-16 relative z-10" data-reveal data-from="pop">
+              <Sticker rotate={-3} color="bg-espresso text-cream-soft">
+                <Icon name="check" size={12} /> arrivati · tutta italia
+              </Sticker>
+            </div>
+          </div>
+
+          {/* Bottom cream "dune" divider */}
+          <svg
+            className="absolute bottom-0 left-0 w-full h-[50px] md:h-[90px] z-10 pointer-events-none block"
+            viewBox="0 0 1440 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,100 L1440,100 L1440,62 C1100,5 720,92 360,42 C180,14 60,72 0,48 Z"
+              fill="var(--cream)"
+            />
+          </svg>
+        </section>
+      );
+    }
+
+    /* ====================== MENU ====================== */
+    function MenuSection({ cart, add, remove, onOpenCart }) {
+      const [cat, setCat] = useState("All");
+      const imageMode = React.useContext(ImageModeContext);
+
+      // On the "All" tab we paginate — show first 12, then "load more" reveals 12 more.
+      // On any specific category, show everything (categories are small enough).
+      const INITIAL_COUNT = 12;
+      const LOAD_STEP = 12;
+      const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+
+      // Reset pagination whenever the category changes
+      useEffect(() => {
+        setVisibleCount(INITIAL_COUNT);
+      }, [cat]);
+
+      const filtered = cat === "All" ? MENU : MENU.filter((m) => m.cat === cat);
+      const isAll = cat === "All";
+      const shown = isAll ? filtered.slice(0, visibleCount) : filtered;
+      const hasMore = isAll && visibleCount < filtered.length;
+
+      const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
+
+      return (
+        <section id="menu" className="relative px-4 md:px-8 py-24">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+              <div>
+                <div data-reveal>
+                  <Sticker rotate={-4} color="bg-tomato text-cream-soft">
+                    <Icon name="flame" size={12} /> tonight's plates
+                  </Sticker>
+                </div>
+                <h2 data-reveal style={{ transitionDelay: '0.1s' }} className="h2-section mt-3 text-tomato">
+                  THE MENU,
+                  <span className="block text-espresso">MAMMA MIA.</span>
+                </h2>
+              </div>
+              <p data-reveal data-from="right" style={{ transitionDelay: '0.2s' }} className="md:max-w-xs text-espresso/80 text-sm md:text-base">
+                {MENU.length} dishes, rotated weekly. Press the red button to add. We send a real human to your table —
+                no QR codes, mai.
+              </p>
+            </div>
+
+            <div data-reveal style={{ transitionDelay: '0.3s' }} className="flex flex-wrap gap-2 mb-10">
+              {CATEGORIES.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCat(c)}
+                  className={`px-5 py-2 rounded-full border-2 border-espresso font-display uppercase tracking-wide text-sm transition-all ${
+                    cat === c
+                      ? "bg-espresso text-cream-soft shadow-[3px_3px_0_0_var(--tomato)]"
+                      : "bg-cream-soft text-espresso shadow-[3px_3px_0_0_var(--espresso)] hover:-translate-y-0.5"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6">
+              {shown.map((m, i) => {
+                const count = cart[m.id] || 0;
+                return (
+                  <div
+                    key={m.id}
+                    data-reveal
+                    style={{ transitionDelay: `${(i % 6) * 0.04}s` }}
+                    className="group bg-cream-soft border-2 border-espresso rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 shadow-[4px_4px_0_0_var(--espresso)] sm:shadow-[6px_6px_0_0_var(--espresso)] relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[10px_10px_0_0_var(--espresso)]"
+                  >
+                    <div className="relative rounded-xl sm:rounded-2xl overflow-hidden aspect-[4/3] border-2 border-espresso bg-cream-soft">
+                      {/* Pulsing plate skeleton while pollinations generates the image */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <div className="anim-soft-pulse w-14 h-14 sm:w-20 sm:h-20 rounded-full border-[3px] border-espresso/15 flex items-center justify-center text-espresso/30">
+                          <Icon name="leaf" size={20} className="sm:hidden" />
+                          <Icon name="leaf" size={28} className="hidden sm:block" />
+                        </div>
+                        <span className="font-hand text-espresso/40 text-sm sm:text-lg mt-1 sm:mt-2 -rotate-2">cucinando…</span>
+                      </div>
+                      <img
+                        src={dishImage(m, imageMode)}
+                        alt={m.name}
+                        loading="lazy"
+                        onLoad={(e) => { e.currentTarget.style.opacity = '1'; }}
+                        onError={(e) => handleDishImgError(e, m)}
+                        style={{ opacity: 0, transition: 'opacity 0.6s ease-out' }}
+                        className="img-zoom relative w-full h-full object-cover"
+                      />
+                      {m.tag && (
+                        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 scale-75 sm:scale-100 origin-top-left transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:rotate-[-12deg]">
+                          <Sticker rotate={-8} color="bg-pasta">
+                            {m.tag}
+                          </Sticker>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => add(m.id)}
+                        aria-label={`Add ${m.name}`}
+                        className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-tomato text-cream-soft border-2 border-espresso shadow-[3px_3px_0_0_var(--espresso)] sm:shadow-[4px_4px_0_0_var(--espresso)] flex items-center justify-center transition-all duration-300 hover:rotate-90 hover:scale-110 hover:bg-tomato-deep active:scale-95"
+                      >
+                        <Icon name="plus" size={16} strokeWidth={3} className="sm:hidden" />
+                        <Icon name="plus" size={22} strokeWidth={3} className="hidden sm:block" />
+                      </button>
+                    </div>
+                    <div className="mt-3 sm:mt-5 px-0.5 sm:px-1 pb-1">
+                      <div className="flex items-baseline justify-between gap-1.5 sm:gap-2">
+                        <h3 className="font-display uppercase text-sm sm:text-xl leading-tight">{m.name}</h3>
+                        <span className="group-price-wiggle font-display text-tomato text-sm sm:text-xl shrink-0 inline-block">€{m.price}</span>
+                      </div>
+                      <p className="menu-desc text-xs sm:text-sm text-espresso/75 mt-1.5 sm:mt-2 leading-relaxed">{m.desc}</p>
+                      <div className="mt-2 sm:mt-3 flex items-center justify-between gap-2">
+                        <span className="text-[10px] sm:text-xs uppercase tracking-wider text-espresso/60 font-medium">{m.cat}</span>
+                        {count > 0 && (
+                          <div className="flex items-center gap-1 sm:gap-2 bg-espresso text-cream-soft rounded-full p-0.5 sm:p-1">
+                            <button onClick={() => remove(m.id)} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full hover:bg-tomato flex items-center justify-center transition-colors">
+                              <Icon name="minus" size={12} />
+                            </button>
+                            <span className="font-display text-xs sm:text-sm w-3 sm:w-4 text-center">{count}</span>
+                            <button onClick={() => add(m.id)} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full hover:bg-tomato flex items-center justify-center transition-colors">
+                              <Icon name="plus" size={12} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {hasMore && (
+              <div className="flex justify-center mt-10 md:mt-12">
+                <button
+                  onClick={() => setVisibleCount((c) => c + LOAD_STEP)}
+                  className="group bg-cream-soft border-2 border-espresso rounded-full px-7 py-3 shadow-[5px_5px_0_0_var(--espresso)] hover:-translate-y-1 hover:shadow-[7px_7px_0_0_var(--espresso)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[3px_3px_0_0_var(--espresso)] transition-all inline-flex items-center gap-2 font-display uppercase tracking-wide text-sm text-espresso"
+                >
+                  <Icon name="plus" size={14} strokeWidth={3} className="group-icon-pop" />
+                  Load more
+                  <span className="text-espresso/55 text-xs">
+                    {visibleCount} / {filtered.length}
+                  </span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Floating cart */}
+          <div className="fixed bottom-6 right-6 z-40">
+            <button
+              onClick={onOpenCart}
+              aria-label="Open basket"
+              className="relative bg-tomato text-cream-soft border-2 border-espresso rounded-full pl-5 pr-6 py-4 shadow-[6px_6px_0_0_var(--espresso)] hover:-translate-y-1 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[3px_3px_0_0_var(--espresso)] transition-all inline-flex items-center gap-3 font-display uppercase tracking-wide text-sm">
+              <Icon name="shopping-bag" size={18} />
+              <span>{cartCount > 0 ? `${cartCount} in basket · view` : "basket empty"}</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-pasta border-2 border-espresso text-espresso w-7 h-7 rounded-full flex items-center justify-center text-xs font-display">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </section>
+      );
+    }
+
+    /* ====================== BOOK ====================== */
+    function inputCls(error) {
+      return `w-full bg-white border-2 ${
+        error ? "border-tomato" : "border-espresso/30"
+      } rounded-xl px-4 py-3 outline-none focus:border-tomato focus:shadow-[3px_3px_0_0_var(--tomato)] transition-all`;
+    }
+
+    function Field({ label, required, children }) {
+      return (
+        <label className="block">
+          <span className="block font-display uppercase tracking-wider text-xs mb-1.5 text-espresso/80">
+            {label} {required && <span className="text-tomato">*</span>}
+          </span>
+          {children}
+        </label>
+      );
+    }
+
+    function Book() {
+      const [form, setForm] = useState({
+        name: "", email: "", phone: "", date: "", time: "19:30", guests: "2", notes: "",
+      });
+      const [submitted, setSubmitted] = useState(false);
+      const [touched, setTouched] = useState({});
+      const ticketRef = useRef(Math.floor(Math.random() * 9000 + 1000));
+
+      const onChange = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+      const valid = form.name.length > 1 && /@/.test(form.email) && form.date.length > 0;
+
+      return (
+        <section id="book" className="relative px-4 md:px-8 py-24 bg-tomato text-cream-soft border-y-2 border-espresso overflow-hidden">
+          <div className="absolute top-10 left-6 hidden md:block font-hand text-cream-soft/40 text-7xl -rotate-12 select-none">ciao!</div>
+          <div className="absolute bottom-10 right-10 hidden md:block font-hand text-cream-soft/40 text-6xl rotate-6 select-none">a presto</div>
+
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 relative">
+            <div className="lg:col-span-5">
+              <div data-reveal>
+                <Sticker rotate={-6} color="bg-pasta">
+                  <Icon name="calendar-days" size={12} /> reservation desk
+                </Sticker>
+              </div>
+              <h2 data-reveal style={{ transitionDelay: '0.1s' }} className="h2-section mt-4">
+                Save a <br /> seat at <br /> the table.
+              </h2>
+              <p data-reveal style={{ transitionDelay: '0.25s' }} className="mt-6 text-cream-soft/90 max-w-md leading-relaxed">
+                Eighteen tables, candle in the middle, vinyl in the corner. Tell us when, and we'll have a glass of
+                prosecco waiting before you take your coat off.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3 text-sm">
+                <div data-reveal style={{ transitionDelay: '0.4s' }} className="border-2 border-cream-soft/40 rounded-2xl px-4 py-3">
+                  <div className="font-display uppercase text-xs opacity-70">Open</div>
+                  <div className="font-display">Tue–Sun · 6pm–midnight</div>
+                </div>
+                <div data-reveal style={{ transitionDelay: '0.5s' }} className="border-2 border-cream-soft/40 rounded-2xl px-4 py-3">
+                  <div className="font-display uppercase text-xs opacity-70">Walk-ins</div>
+                  <div className="font-display">Bar seats · always</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7" data-reveal data-from="right" style={{ transitionDelay: '0.2s' }}>
+              <div className="bg-cream-soft text-espresso border-2 border-espresso rounded-3xl p-6 md:p-8 shadow-[10px_10px_0_0_var(--espresso)] relative">
+                <div className="absolute -left-3 top-1/2 w-6 h-6 rounded-full bg-tomato border-2 border-espresso" />
+                <div className="absolute -right-3 top-1/2 w-6 h-6 rounded-full bg-tomato border-2 border-espresso" />
+
+                {submitted ? (
+                  <div className="text-center py-10">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-basil text-cream-soft border-2 border-espresso shadow-[4px_4px_0_0_var(--espresso)] flex items-center justify-center mb-4">
+                      <Icon name="check" size={28} strokeWidth={3} />
+                    </div>
+                    <h3 className="font-display uppercase text-3xl text-tomato">Tavolo prenotato!</h3>
+                    <p className="mt-3 text-espresso/80">
+                      See you on {form.date} at {form.time} — table for {form.guests}. Check your email for the ticket.
+                    </p>
+                    <button onClick={() => setSubmitted(false)} className="mt-6 underline font-display uppercase text-sm tracking-wide">
+                      Book another
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (valid) setSubmitted(true);
+                      else setTouched({ name: true, email: true, date: true });
+                    }}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                  >
+                    <Field label="Your name" required>
+                      <input value={form.name} onChange={(e) => onChange("name", e.target.value)} onBlur={() => setTouched((t) => ({ ...t, name: true }))} placeholder="Sofia Romano" className={inputCls(touched.name && form.name.length < 2)} />
+                    </Field>
+                    <Field label="Email" required>
+                      <input type="email" value={form.email} onChange={(e) => onChange("email", e.target.value)} onBlur={() => setTouched((t) => ({ ...t, email: true }))} placeholder="sofia@buongiorno.it" className={inputCls(touched.email && !/@/.test(form.email))} />
+                    </Field>
+                    <Field label="Phone">
+                      <input value={form.phone} onChange={(e) => onChange("phone", e.target.value)} placeholder="+39 06 1234 5678" className={inputCls(false)} />
+                    </Field>
+                    <Field label="Guests">
+                      <select value={form.guests} onChange={(e) => onChange("guests", e.target.value)} className={inputCls(false)}>
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                          <option key={n} value={n}>{n} {n === 1 ? "guest" : "guests"}</option>
+                        ))}
+                      </select>
+                    </Field>
+                    <Field label="Date" required>
+                      <input type="date" value={form.date} onChange={(e) => onChange("date", e.target.value)} onBlur={() => setTouched((t) => ({ ...t, date: true }))} className={inputCls(touched.date && !form.date)} />
+                    </Field>
+                    <Field label="Time">
+                      <select value={form.time} onChange={(e) => onChange("time", e.target.value)} className={inputCls(false)}>
+                        {["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"].map((t) => (
+                          <option key={t} value={t}>{t}</option>
+                        ))}
+                      </select>
+                    </Field>
+                    <div className="sm:col-span-2">
+                      <Field label="Special requests">
+                        <textarea value={form.notes} onChange={(e) => onChange("notes", e.target.value)} rows={3} placeholder="Birthday? Allergies? Window table? Tell us." className={inputCls(false) + " resize-none"} />
+                      </Field>
+                    </div>
+                    <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-dashed border-espresso/30">
+                      <p className="text-xs text-espresso/70 font-medium uppercase tracking-wide">
+                        Ticket #FRN-{ticketRef.current} · held 15 min
+                      </p>
+                      <PillButton type="submit">
+                        Reserve table <Icon name="chevron-right" size={16} className="transition-transform group-hover:translate-x-1" />
+                      </PillButton>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ====================== CUTTABLE PIZZA (interactive toy in CTA banner) ====================== */
+    function CuttablePizza() {
+      // 8 slices, each rendered as an SVG <g> with its own physics state.
+      // The pizza disc is centered in a 280×280 SVG. Each slice is a wedge from center.
+      const SIZE = 280;
+      const CENTER = SIZE / 2;
+      const RADIUS = 115;
+      const SLICES = 8;
+
+      // Physics state for each slice — kept in refs so we don't trigger React renders
+      // every frame. We mutate transform attributes directly on DOM nodes.
+      const sliceRefs = useRef([]);
+      const physics = useRef(
+        Array.from({ length: SLICES }, () => ({ x: 0, y: 0, vx: 0, vy: 0, rot: 0, vr: 0, kicked: false }))
+      );
+
+      // For detecting which slice the cursor "cuts" through
+      const containerRef = useRef(null);
+      const lastMouse = useRef({ x: -1, y: -1 });
+      const animFrame = useRef(null);
+
+      // Reset all slices back to assembled state
+      const reset = () => {
+        physics.current.forEach((p) => {
+          p.x = 0; p.y = 0; p.vx = 0; p.vy = 0; p.rot = 0; p.vr = 0; p.kicked = false;
+        });
+      };
+
+      // Compute slice geometry — a wedge from center to two radial points
+      function sliceCenter(i) {
+        // Each wedge spans 360/8 = 45°. Its center direction is at (i + 0.5) * 45°.
+        const angleDeg = (i + 0.5) * (360 / SLICES) - 90; // -90 so slice 0 points up
+        const a = (angleDeg * Math.PI) / 180;
+        return { cx: CENTER + Math.cos(a) * RADIUS * 0.55, cy: CENTER + Math.sin(a) * RADIUS * 0.55 };
+      }
+
+      // Build the SVG path for slice i — a wedge from center
+      function slicePath(i) {
+        const startDeg = i * (360 / SLICES) - 90;
+        const endDeg = (i + 1) * (360 / SLICES) - 90;
+        const a1 = (startDeg * Math.PI) / 180;
+        const a2 = (endDeg * Math.PI) / 180;
+        const x1 = CENTER + Math.cos(a1) * RADIUS;
+        const y1 = CENTER + Math.sin(a1) * RADIUS;
+        const x2 = CENTER + Math.cos(a2) * RADIUS;
+        const y2 = CENTER + Math.sin(a2) * RADIUS;
+        // Large-arc-flag is 0 because each wedge is < 180°
+        return `M ${CENTER} ${CENTER} L ${x1} ${y1} A ${RADIUS} ${RADIUS} 0 0 1 ${x2} ${y2} Z`;
+      }
+
+      // "Kick" a slice when the cursor passes through its center
+      function kickSlice(i, dirX, dirY) {
+        const p = physics.current[i];
+        if (p.kicked) {
+          // Already flying — give it another boost in same direction
+          p.vx += dirX * 4;
+          p.vy += dirY * 4;
+          p.vr += (Math.random() - 0.5) * 12;
+          return;
+        }
+        p.kicked = true;
+        // Speed proportional to direction vector, with some randomness
+        const speed = 7 + Math.random() * 4;
+        p.vx = dirX * speed + (Math.random() - 0.5) * 3;
+        p.vy = dirY * speed + (Math.random() - 0.5) * 3 - 2; // slight upward boost
+        p.vr = (Math.random() - 0.5) * 20; // rotation kick
+      }
+
+      // Mouse-move handler — detect cuts
+      useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        function onMove(e) {
+          const rect = container.getBoundingClientRect();
+          // Convert mouse coords into SVG coords (SVG is SIZE×SIZE, scaled to container)
+          const scale = rect.width / SIZE;
+          const mx = (e.clientX - rect.left) / scale;
+          const my = (e.clientY - rect.top) / scale;
+
+          if (lastMouse.current.x >= 0) {
+            // Check each slice center — if the segment from last to current
+            // passes close to it, kick the slice.
+            for (let i = 0; i < SLICES; i++) {
+              const p = physics.current[i];
+              if (p.kicked) continue;
+              const center = sliceCenter(i);
+              const cx = center.cx + p.x;
+              const cy = center.cy + p.y;
+              // Distance from slice center to the line segment
+              const d = distanceFromSegment(cx, cy, lastMouse.current.x, lastMouse.current.y, mx, my);
+              if (d < 32) {
+                const dx = mx - lastMouse.current.x;
+                const dy = my - lastMouse.current.y;
+                const len = Math.hypot(dx, dy) || 1;
+                kickSlice(i, dx / len, dy / len);
+              }
+            }
+          }
+          lastMouse.current.x = mx;
+          lastMouse.current.y = my;
+        }
+
+        function onLeave() {
+          lastMouse.current.x = -1;
+          lastMouse.current.y = -1;
+        }
+
+        container.addEventListener('mousemove', onMove);
+        container.addEventListener('mouseleave', onLeave);
+        return () => {
+          container.removeEventListener('mousemove', onMove);
+          container.removeEventListener('mouseleave', onLeave);
+        };
+      }, []);
+
+      // Physics integration loop
+      useEffect(() => {
+        function tick() {
+          const gravity = 0.4;
+          const friction = 0.985;
+          const bounce = 0.55;
+
+          for (let i = 0; i < SLICES; i++) {
+            const p = physics.current[i];
+            if (!p.kicked) continue;
+            p.vy += gravity;
+            p.vx *= friction;
+            p.vy *= friction;
+            p.vr *= 0.97;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vr;
+
+            // Bounce off frame walls (frame is ~SIZE wide/tall)
+            const center = sliceCenter(i);
+            const cx = center.cx + p.x;
+            const cy = center.cy + p.y;
+            const margin = 30;
+            if (cx < margin) { p.x += margin - cx; p.vx = -p.vx * bounce; }
+            if (cx > SIZE - margin) { p.x -= cx - (SIZE - margin); p.vx = -p.vx * bounce; }
+            if (cy < margin) { p.y += margin - cy; p.vy = -p.vy * bounce; }
+            if (cy > SIZE - margin) { p.y -= cy - (SIZE - margin); p.vy = -p.vy * bounce * 0.7; }
+
+            // Apply to DOM
+            const node = sliceRefs.current[i];
+            if (node) {
+              const tx = p.x;
+              const ty = p.y;
+              const sliceC = sliceCenter(i);
+              // Rotate around the slice's own center, then translate
+              node.setAttribute('transform',
+                `translate(${tx} ${ty}) rotate(${p.rot} ${sliceC.cx} ${sliceC.cy})`
+              );
+            }
+          }
+          animFrame.current = requestAnimationFrame(tick);
+        }
+        animFrame.current = requestAnimationFrame(tick);
+        return () => { if (animFrame.current) cancelAnimationFrame(animFrame.current); };
+      }, []);
+
+      const [resetTick, setResetTick] = useState(0);
+      const handleReset = () => {
+        reset();
+        // Force the DOM transforms to clear immediately too
+        sliceRefs.current.forEach((n) => n && n.removeAttribute('transform'));
+        setResetTick((t) => t + 1);
+      };
+
+      return (
+        <div className="relative">
+          {/* Frame */}
+          <div
+            ref={containerRef}
+            className="relative bg-cream-soft border-4 border-espresso rounded-3xl shadow-[6px_6px_0_0_var(--tomato)]"
+            style={{ width: SIZE, height: SIZE, maxWidth: '100%', aspectRatio: '1 / 1' }}
+          >
+            <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full">
+              {/* Pizza base (always rendered behind slices, kept as visual ghost) */}
+              <circle cx={CENTER} cy={CENTER} r={RADIUS + 4} fill="#c9971c" stroke="#3a241a" strokeWidth="3" opacity="0.25" />
+
+              {/* Slices */}
+              {Array.from({ length: SLICES }).map((_, i) => (
+                <g key={i} ref={(el) => (sliceRefs.current[i] = el)} style={{ transition: 'none' }}>
+                  {/* Cheese base */}
+                  <path d={slicePath(i)} fill="#f2c94c" stroke="#3a241a" strokeWidth="3" strokeLinejoin="round" />
+                  {/* Crust ring (outer edge highlight) */}
+                  <path d={slicePath(i)} fill="none" stroke="#c9971c" strokeWidth="14" strokeLinejoin="round" opacity="0.45"
+                        style={{ transform: `scale(0.92)`, transformOrigin: `${CENTER}px ${CENTER}px` }} />
+                  {/* Toppings: 1-2 pepperoni dots + 1 basil leaf per slice, deterministically placed */}
+                  {sliceToppings(i, CENTER, RADIUS)}
+                </g>
+              ))}
+            </svg>
+          </div>
+
+          {/* Hint + reset button */}
+          <div className="absolute -top-3 -left-3 z-10">
+            <span
+              className="inline-flex items-center gap-1 px-3 py-1 rounded-full border-2 border-espresso shadow-[3px_3px_0_0_var(--espresso)] font-display text-[10px] tracking-wide uppercase bg-pasta text-espresso"
+              style={{ transform: 'rotate(-6deg)' }}
+            >
+              cut me!
+            </span>
+          </div>
+          <button
+            onClick={handleReset}
+            className="absolute -bottom-3 -right-3 z-10 bg-tomato text-cream-soft border-2 border-espresso rounded-full px-4 py-1.5 shadow-[3px_3px_0_0_var(--espresso)] hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] transition-all font-display uppercase text-xs tracking-wide inline-flex items-center gap-1.5"
+            aria-label="Reset pizza"
+          >
+            <Icon name="rotate-ccw" size={12} /> reset
+          </button>
+        </div>
+      );
+    }
+
+    // Helper: distance from point (px,py) to line segment (x1,y1)-(x2,y2)
+    function distanceFromSegment(px, py, x1, y1, x2, y2) {
+      const A = px - x1;
+      const B = py - y1;
+      const C = x2 - x1;
+      const D = y2 - y1;
+      const dot = A * C + B * D;
+      const lenSq = C * C + D * D;
+      let t = lenSq > 0 ? dot / lenSq : -1;
+      t = Math.max(0, Math.min(1, t));
+      const xx = x1 + t * C;
+      const yy = y1 + t * D;
+      const dx = px - xx;
+      const dy = py - yy;
+      return Math.hypot(dx, dy);
+    }
+
+    // Helper: render toppings for slice i — deterministic placement per slice
+    function sliceToppings(i, CENTER, RADIUS) {
+      // Place 1-2 pepperonis at fixed offsets along the slice's center line
+      const startDeg = i * 45 - 90;
+      const midDeg = startDeg + 22.5;
+      const a = (midDeg * Math.PI) / 180;
+      const inner = 0.45, outer = 0.78;
+      const xi = CENTER + Math.cos(a) * RADIUS * inner;
+      const yi = CENTER + Math.sin(a) * RADIUS * inner;
+      const xo = CENTER + Math.cos(a) * RADIUS * outer;
+      const yo = CENTER + Math.sin(a) * RADIUS * outer;
+      // Off-axis basil leaf
+      const leafA = ((midDeg + (i % 2 === 0 ? -10 : 10)) * Math.PI) / 180;
+      const xl = CENTER + Math.cos(leafA) * RADIUS * 0.6;
+      const yl = CENTER + Math.sin(leafA) * RADIUS * 0.6;
+      return (
+        <g>
+          <circle cx={xi} cy={yi} r="9" fill="#d83a2a" stroke="#3a241a" strokeWidth="2" />
+          <circle cx={xo} cy={yo} r="7" fill="#d83a2a" stroke="#3a241a" strokeWidth="2" />
+          <ellipse cx={xl} cy={yl} rx="6" ry="4" fill="#4f7a3c" stroke="#3a241a" strokeWidth="1.5"
+                   transform={`rotate(${midDeg + 30} ${xl} ${yl})`} />
+        </g>
+      );
+    }
+
+    /* ====================== FOOTER ====================== */
+    function ContactCard({ icon, label, lines, color, delay = 0 }) {
+      return (
+        <div
+          data-reveal
+          data-from="pop"
+          style={{ transitionDelay: `${delay}s` }}
+          className={`group ${color} border-2 border-espresso rounded-3xl p-5 shadow-[5px_5px_0_0_var(--espresso)] hover:-translate-y-1 hover:shadow-[7px_7px_0_0_var(--espresso)] transition-all duration-300`}
+        >
+          <div className="group-icon-pop w-10 h-10 rounded-xl border-2 border-espresso bg-cream-soft text-espresso flex items-center justify-center mb-3">
+            <Icon name={icon} size={18} />
+          </div>
+          <div className="font-display uppercase text-lg">{label}</div>
+          <div className="text-sm mt-1 opacity-90 leading-relaxed">
+            {lines.map((l, i) => <div key={i}>{l}</div>)}
+          </div>
+        </div>
+      );
+    }
+
+    function Footer() {
+      return (
+        <section id="visit" className="relative px-4 md:px-8 py-24">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="text-center mb-14">
+              <div data-reveal>
+                <Sticker rotate={-4} color="bg-basil text-cream-soft">
+                  <Icon name="sparkles" size={12} /> see you tonight
+                </Sticker>
+              </div>
+              <h2 data-reveal data-from="up" style={{ transitionDelay: '0.15s' }} className="h2-section mt-4 text-tomato">
+                BUONA <br /> SERA.
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div data-reveal data-from="left" className="lg:col-span-7 relative rounded-3xl overflow-hidden border-2 border-espresso shadow-[8px_8px_0_0_var(--espresso)] min-h-[340px] bg-cream-soft">
+                <img src={img.interior2} alt="Forno interior" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 via-espresso/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-cream-soft">
+                  <Sticker rotate={-4} color="bg-pasta">
+                    <Icon name="map-pin" size={12} /> trastevere
+                  </Sticker>
+                  <h3 className="font-display uppercase text-3xl md:text-5xl mt-3">Via dei Coronari, 47</h3>
+                  <p className="opacity-90 mt-1">Roma 00186 · two doors past the laundromat with the orange door</p>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <ContactCard delay={0.05} icon="clock" label="Hours" lines={["Tue–Thu 18:00–23:00", "Fri–Sat 18:00–01:00", "Sun 12:00–22:00"]} color="bg-pasta" />
+                <ContactCard delay={0.15} icon="phone" label="Call us" lines={["+39 06 4566 2200", "WhatsApp welcome"]} color="bg-cream-soft" />
+                <ContactCard delay={0.25} icon="mail" label="Email" lines={["ciao@forno-roma.it", "press@forno-roma.it"]} color="bg-basil text-cream-soft" />
+                <ContactCard delay={0.35} icon="instagram" label="@forno.roma" lines={["48k pasta lovers", "DMs always open"]} color="bg-tomato text-cream-soft" />
+              </div>
+            </div>
+
+            <div data-reveal data-from="scale" className="mt-16 bg-espresso text-cream-soft border-2 border-espresso rounded-3xl p-8 md:p-12 shadow-[10px_10px_0_0_var(--tomato)] relative overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
+                <div>
+                  <p className="font-hand text-pasta text-3xl -rotate-2">one more thing —</p>
+                  <h3 className="font-display uppercase text-4xl md:text-6xl leading-[0.9] mt-1">
+                    The first <span className="text-tomato">tiramisù</span> is on us.
+                  </h3>
+                  <p className="opacity-80 mt-3 mb-6 max-w-md">First-time guests get a slice with their espresso. Just mention "primo" when you book.</p>
+                  <a href="#book" className="inline-block">
+                    <PillButton>Reserve now</PillButton>
+                  </a>
+                </div>
+                <div className="flex justify-center md:justify-end">
+                  <CuttablePizza />
+                </div>
+              </div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-tomato/20 pointer-events-none" />
+            </div>
+
+            <div className="mt-10 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm text-espresso/70">
+              <div className="flex items-center gap-3">
+                <span className="font-display text-tomato text-2xl">FORNO.</span>
+                <span>© {new Date().getFullYear()} Forno Trattoria · Roma, Italia</span>
+              </div>
+              <div className="flex gap-5 font-medium">
+                <a href="#" className="hover:text-tomato">Privacy</a>
+                <a href="#" className="hover:text-tomato">Allergens</a>
+                <a href="#" className="hover:text-tomato">Press</a>
+                <a href="#" className="hover:text-tomato">Careers</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ====================== CART DRAWER ====================== */
+    function CartDrawer({ open, onClose, cart, add, remove, setCart }) {
+      const imageMode = React.useContext(ImageModeContext);
+      const items = MENU
+        .filter((m) => cart[m.id] > 0)
+        .map((m) => ({ ...m, qty: cart[m.id] }));
+      const subtotal = items.reduce((s, it) => s + it.price * it.qty, 0);
+      const itemCount = items.reduce((s, it) => s + it.qty, 0);
+
+      // Close on Escape + lock body scroll while open
+      useEffect(() => {
+        if (!open) return;
+        const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+        document.addEventListener('keydown', onKey);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+          document.removeEventListener('keydown', onKey);
+          document.body.style.overflow = prevOverflow;
+        };
+      }, [open, onClose]);
+
+      const browseMenu = () => {
+        onClose();
+        setTimeout(() => {
+          const el = document.getElementById('menu');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 220);
+      };
+
+      return (
+        <React.Fragment>
+          {/* Backdrop */}
+          <div
+            onClick={onClose}
+            aria-hidden="true"
+            className={`fixed inset-0 z-[60] bg-espresso/40 backdrop-blur-[2px] transition-opacity duration-300 ${
+              open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+          />
+          {/* Drawer */}
+          <aside
+            role="dialog"
+            aria-label="Your basket"
+            aria-hidden={!open}
+            className={`fixed top-0 right-0 z-[61] h-full w-full sm:w-[440px] bg-cream-soft border-l-2 border-espresso flex flex-col transition-transform duration-300 ease-out ${
+              open ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
+            {/* Header */}
+            <header className="flex items-center justify-between px-5 py-4 border-b-2 border-espresso bg-pasta shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="relative w-11 h-11 rounded-full bg-tomato text-cream-soft border-2 border-espresso flex items-center justify-center shadow-[3px_3px_0_0_var(--espresso)]">
+                  <Icon name="shopping-bag" size={18} />
+                  {itemCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-cream-soft border-2 border-espresso text-espresso w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-display">
+                      {itemCount}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-display uppercase text-xl leading-none">Your basket</div>
+                  <div className="text-xs text-espresso/70 mt-1">
+                    {itemCount === 0
+                      ? 'nothing yet — hai fame?'
+                      : `${itemCount} plate${itemCount === 1 ? '' : 's'} ready`}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                aria-label="Close basket"
+                className="w-10 h-10 rounded-full border-2 border-espresso bg-cream-soft hover:bg-white flex items-center justify-center shadow-[3px_3px_0_0_var(--espresso)] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0_0_var(--espresso)]"
+              >
+                <Icon name="x" size={16} />
+              </button>
+            </header>
+
+            {/* Items */}
+            <div className="flex-1 overflow-y-auto p-5">
+              {items.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center py-12">
+                  <div className="w-24 h-24 rounded-full bg-cream border-4 border-espresso shadow-[5px_5px_0_0_var(--espresso)] flex items-center justify-center mb-5 -rotate-6">
+                    <Icon name="shopping-bag" size={36} className="text-espresso/40" />
+                  </div>
+                  <p className="font-hand text-tomato text-3xl -rotate-2 mb-2">la cesta è vuota</p>
+                  <h3 className="font-display uppercase text-2xl leading-tight mb-3">
+                    Nothing in here yet.
+                  </h3>
+                  <p className="text-sm text-espresso/70 max-w-[260px] leading-relaxed mb-6">
+                    Add a few plates from the menu — we'll keep them warm until you walk in.
+                  </p>
+                  <PillButton onClick={browseMenu}>
+                    Browse the menu <Icon name="chevron-right" size={16} />
+                  </PillButton>
+                </div>
+              ) : (
+                <ul className="space-y-3">
+                  {items.map((it) => (
+                    <li
+                      key={it.id}
+                      className="bg-white border-2 border-espresso rounded-2xl p-3 flex gap-3 shadow-[4px_4px_0_0_var(--espresso)]"
+                    >
+                      <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden border-2 border-espresso">
+                        <img src={dishImage(it, imageMode)} alt={it.name} onError={(e) => handleDishImgError(e, it)} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <h4 className="font-display uppercase text-base leading-tight truncate">{it.name}</h4>
+                            <p className="text-xs text-espresso/60 mt-0.5">€{it.price} · {it.cat}</p>
+                          </div>
+                          <button
+                            onClick={() =>
+                              setCart((c) => {
+                                const n = { ...c };
+                                delete n[it.id];
+                                return n;
+                              })
+                            }
+                            aria-label={`Remove ${it.name}`}
+                            className="text-espresso/50 hover:text-tomato transition-colors -mt-1 -mr-1 p-1 shrink-0"
+                          >
+                            <Icon name="x" size={14} />
+                          </button>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between">
+                          <div className="flex items-center gap-2 bg-espresso text-cream-soft rounded-full p-1">
+                            <button
+                              onClick={() => remove(it.id)}
+                              aria-label="Decrease quantity"
+                              className="w-7 h-7 rounded-full hover:bg-tomato flex items-center justify-center transition-colors"
+                            >
+                              <Icon name="minus" size={13} />
+                            </button>
+                            <span className="font-display text-sm w-5 text-center">{it.qty}</span>
+                            <button
+                              onClick={() => add(it.id)}
+                              aria-label="Increase quantity"
+                              className="w-7 h-7 rounded-full hover:bg-tomato flex items-center justify-center transition-colors"
+                            >
+                              <Icon name="plus" size={13} />
+                            </button>
+                          </div>
+                          <span className="font-display text-tomato text-lg">€{it.price * it.qty}</span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Footer */}
+            {items.length > 0 && (
+              <footer className="border-t-2 border-espresso p-5 bg-cream-soft shrink-0">
+                <div className="border-2 border-dashed border-espresso/30 rounded-2xl p-4 mb-4">
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-display uppercase text-sm text-espresso/70">Subtotal</span>
+                    <span className="font-display text-tomato text-3xl">€{subtotal}</span>
+                  </div>
+                  <p className="text-xs text-espresso/60 mt-1">
+                    Service & coperto included. Show this list to your waiter on arrival.
+                  </p>
+                </div>
+                <a href="#book" onClick={onClose} className="block">
+                  <PillButton className="w-full justify-center">
+                    Reserve a table for this
+                    <Icon name="chevron-right" size={16} className="transition-transform group-hover:translate-x-1" />
+                  </PillButton>
+                </a>
+                <button
+                  onClick={() => setCart({})}
+                  className="text-xs text-espresso/60 hover:text-tomato underline mt-3 block mx-auto"
+                >
+                  clear basket
+                </button>
+              </footer>
+            )}
+          </aside>
+        </React.Fragment>
+      );
+    }
+
+    /* ====================== APP ====================== */
+    function App() {
+      useReveal();
+      const imageMode = useLocalImageMode();
+      const [cart, setCart] = useState({});
+      const [cartOpen, setCartOpen] = useState(false);
+
+      const add = (id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
+      const remove = (id) =>
+        setCart((c) => {
+          const n = (c[id] || 0) - 1;
+          const next = { ...c };
+          if (n <= 0) delete next[id];
+          else next[id] = n;
+          return next;
+        });
+
+      return (
+        <ImageModeContext.Provider value={imageMode}>
+          <div className="relative min-h-screen bg-background text-foreground overflow-x-clip">
+            <Nav />
+            <main>
+              <Hero />
+              <Benefits />
+              <Travels />
+              <MenuSection
+                cart={cart}
+                add={add}
+                remove={remove}
+                onOpenCart={() => setCartOpen(true)}
+              />
+              <Book />
+              <Reviews />
+              <Footer />
+            </main>
+            <CartDrawer
+              open={cartOpen}
+              onClose={() => setCartOpen(false)}
+              cart={cart}
+              add={add}
+              remove={remove}
+              setCart={setCart}
+            />
+          </div>
+        </ImageModeContext.Provider>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
